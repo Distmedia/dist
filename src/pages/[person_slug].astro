@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+
+
+export function getStaticPaths() {
+  function slugify(str) {
+    const map = { 'å': 'a', 'ä': 'a', 'ö': 'o' }
+
+    return str.trim() // remove whitespace from both ends of the string
+        .toLowerCase() // convert to lowercase
+        .replace(/å|ä|ö/gi, match => map[match]) // replace å, ä, ö with a, a, o
+        .replace(/\s+/g, '-') // replace spaces with -
+        .replace(/[^a-z0-9-]/gi, '') // remove all characters that are not letters or -
+  }
+
+  function apply(person) {
+    return person.map(p => {
+      const slug = slugify(p.name)
+
+      return { ...p, slug }
+    })
+  }
+
+  const people = apply([
+    { name: "Kungen" },
+  ])
+
+  return people.map(person => {
+		return { 
+			params: { person_slug: person.slug },
+			props: { person }
+		 }
+	})
+}
+
+let { person } = Astro.props;
+---
+
+<Layout title={person.slug}>
+  <Navbar additional={person.name} />
+	<main class="min-h-screen min-w-full p-2 pt-14 flex sm:grid sm:grid-cols-[540px_minmax(min-content,800px)]">
+    <div/>
+
+    <div class="mt-4">
+      {person.name}
+    </div>
+	</main>
+</Layout>
+
