@@ -1,36 +1,39 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
-
+import { ViewTransitions } from "astro:transitions";
+import Backdrop from "../components/Backdrop.astro";
 
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+<html lang="en" class="overflow-y-scroll">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
     <ViewTransitions />
-	</head>
-	<body class="font-karlst">
-		<slot />
-	</body>
-</html>
+  </head>
+  <body class="font-karlst text-karlst-green">
+		<Backdrop />
+		<div style="filter: hue-rotate(180deg)">
+			<slot />
+		</div>
+  </body>
 
-<style is:global>
-  @font-face {
-    font-family: 'KarlST';
-    src: url('/fonts/KarlST_Bold.woff2') format('woff2');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-</style>
+	<style is:global>
+    @font-face {
+      font-family: "KarlST";
+      src: url("/fonts/KarlST_Bold.woff2") format("woff2");
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+</html>

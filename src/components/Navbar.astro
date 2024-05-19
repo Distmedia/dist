@@ -6,7 +6,7 @@ interface Props {
 
 const { active, additional } = Astro.props;
 
-function apply(routes) {
+function applyAttributes(routes) {
   return routes.map(r => {
     const display = r.id.charAt(0).toUpperCase() + r.id.slice(1)
     const style = r.id === active ? "" : "blur-xs hover:blur-none transition-blur"
@@ -15,14 +15,14 @@ function apply(routes) {
   })
 }
 
-const routes = apply([
+const routes = applyAttributes([
   { id: "index", href: "/" },
   { id: "read", href: "/read" },
   { id: "listen", href: "/listen" },
 ])
 ---
 
-<div class="sm:hidden flex fixed w-full p-2 w-full justify-between space-x-4 text-3xl z-10">
+<div class="sm:hidden flex fixed w-full p-2 justify-between space-x-4 text-3xl z-10">
   {!additional && routes.map(r => (<span><a href={r.href} class={r.style}>{r.display}</a></span>))}
   {additional && <span class="cursor-default">{additional}</span>}
   {additional && <a href="/read" class="hover:blur-xs transition-blur">x</a>}

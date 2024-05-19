@@ -8,6 +8,12 @@ export default {
       fontFamily: {
         'karlst': ['"KarlST"', ...defaultTheme.fontFamily.mono],
       },
+      colors: {
+        'karlst': {
+          green: '#2E8F41',
+        },
+
+      },
       transitionProperty: {
         'blur': 'filter',
       },
