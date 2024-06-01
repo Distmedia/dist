@@ -2,9 +2,10 @@
 interface Props {
 	active?: string;
 	additional?: string;
+	back?: string;
 }
 
-const { active, additional } = Astro.props;
+const { active, additional, back } = Astro.props;
 
 function applyAttributes(routes) {
   return routes.map(r => {
@@ -25,11 +26,11 @@ const routes = applyAttributes([
 <div class="sm:hidden flex fixed w-full p-2 justify-between space-x-4 text-3xl z-10">
   {!additional && routes.map(r => (<span><a href={r.href} class={r.style}>{r.display}</a></span>))}
   {additional && <span class="cursor-default">{additional}</span>}
-  {additional && <a href="/read" class="hover:blur-xs transition-blur">x</a>}
+  {additional && <a href={back} class="hover:blur-xs transition-blur">x</a>}
 </div>
 
 <div class="hidden sm:grid fixed w-full p-2 grid-cols-[180px_180px_180px_1fr_min-content] text-3xl z-10">
   {routes.map(r => (<span><a href={r.href} class={r.style}>{r.display}</a></span>))}
   {additional && <span class="cursor-default">{additional}</span>}
-  {additional && <a href="/read" class="hover:blur-xs transition-blur">x</a>}
+  {additional && <a href={back} class="hover:blur-xs transition-blur">x</a>}
 </div>

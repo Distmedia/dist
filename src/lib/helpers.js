@@ -9,14 +9,6 @@ export function slugify(str) {
     .replace(/[^a-z0-9-]/gi, ""); // remove all characters that are not letters or -
 }
 
-export function applySlugs(arr) {
-  return arr.map((a) => {
-    const slug = slugify(a.name);
-
-    return { ...a, slug };
-  });
-}
-
 // Base color must be #000!
 export function hslFilter(h, s, l) {
   return `hue-rotate(${h}deg) saturate(${s}%) brightness(${l}%)`

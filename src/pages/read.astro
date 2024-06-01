@@ -1,47 +1,32 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import PText from "../components/PText.astro";
+import { slugify } from "../lib/helpers";
+
+import { getSanity } from "../lib/api";
+const { introduction, people, additional_info } = await getSanity(null, "read");
 ---
 
 <Layout title="Read">
   <Navbar active="read" />
-	<main class="min-h-screen min-w-full p-2 pt-14 flex sm:grid sm:grid-cols-[180px_minmax(min-content,800px)]">
-    <div/>
+  <main
+    class="min-h-screen min-w-full p-2 pt-14 flex sm:grid sm:grid-cols-[180px_minmax(min-content,800px)]"
+  >
+    <div></div>
     <div>
-      <p class="mt-4">Vi är journalister, ljud-designers & producenter med lång erfarenhet som drivs av smarta, modiga, roliga, berörande och oväntade berättelser. Kom till oss i Gamla Stan i Stockholm om du har en bra historia, eller vill samarbeta med oss.</p>
+      <PText portableText={introduction} />
 
       <h1 class="mt-4">kontakt</h1>
-      <ul>
-        <li>
-          <a href="/kungen" class="hover:blur-xs transition-blur">Kungen</a>
-        </li>
-        <li>2</li>
-        <li>3</li>
-      </ul>
+      {
+        people.map((person) => (
+          <a href={slugify(person.name)} class="hover:blur-xs transition-blur">
+            {person.name}
+          </a>
+        ))
+      }
 
-      <h1 class="mt-4">adress</h1>
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-      </ul>
-
-      <h1 class="mt-4">instagram</h1>
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-      </ul>
-
-      <h1 class="mt-4">läs om oss</h1>
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-      </ul>
+      <PText portableText={additional_info} />
     </div>
-	</main>
+  </main>
 </Layout>
-

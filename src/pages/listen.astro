@@ -1,25 +1,31 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import { slugify } from "../lib/helpers";
+
+import { getSanity } from "../lib/api";
+const { productions } = await getSanity(null, "productions");
 ---
 
 <Layout title="Listen">
   <Navbar active="listen" />
-	<main class="min-h-screen min-w-full p-2 pt-14 flex sm:grid sm:grid-cols-[360px_1fr]">
-    <div/>
+  <main
+    class="min-h-screen min-w-full p-2 pt-14 flex sm:grid sm:grid-cols-[360px_1fr]"
+  >
+    <div></div>
 
-    <div class="mt-4">
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>7</li>
-        <li>8</li>
-        <li>9</li>
-      </ul>
+    <div class="flex flex-col">
+      {
+        productions.map((production) => (
+          <a
+            href={slugify(production.title)}
+            class="hover:blur-xs transition-blur"
+          >
+            {production.title}
+          </a>
+        ))
+      }
     </div>
-	</main>
+  </main>
 </Layout>
-
+==

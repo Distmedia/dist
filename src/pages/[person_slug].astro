@@ -1,14 +1,17 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
-import { applySlugs } from "../helpers";
 
-export function getStaticPaths() {
-  const people = applySlugs([{ name: "Kungen" }]);
+import { getSanity } from "../lib/api";
+import { slugify } from "../lib/helpers";
+import PText from "../components/PText.astro";
+
+export async function getStaticPaths() {
+  const { people } = await getSanity(null, "people");
 
   return people.map((person) => {
     return {
-      params: { person_slug: person.slug },
+      params: { person_slug: slugify(person.name) },
       props: { person },
     };
   });
@@ -17,36 +20,25 @@ export function getStaticPaths() {
 interface Props {
   person: {
     name: string;
-    slug: string;
+    info: any;
+    avatarUrl: string;
   };
 }
 
 let { person } = Astro.props;
 ---
 
-<Layout title={person.slug}>
-  <Navbar additional={person.name} />
+<Layout title={person.name}>
+  <Navbar additional={person.name} back="/read" />
   <main
     class="min-h-screen min-w-full p-2 pt-14 flex sm:grid sm:grid-cols-[540px_minmax(min-content,800px)]"
   >
     <div></div>
 
     <div class="mt-4">
-      {person.name}
-
-      <div style="filter: hue-rotate(-180deg)">
-        <iframe
-          class="rounded-xl"
-          style="border-radius:12px"
-          src="https://open.spotify.com/embed/track/7FQcCVNK4AttPgYjQbetL8?utm_source=generator"
-          width="100%"
-          height="152"
-          allowfullscreen=""
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"
-        >
-        </iframe>
-      </div>
+      <!-- filter is not needed here -->
+      <img src={person.avatarUrl} alt={person.name} class="w-full rounded-xl" style="filter: hue-rotate(-180deg)" />
+      <PText portableText={person.info} />
     </div>
   </main>
 </Layout>
