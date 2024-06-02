@@ -27,14 +27,14 @@ let { production } = Astro.props;
 <Layout title={production.title}>
   <Navbar additional={production.title} back="/listen" />
   <main
-    class="min-h-screen min-w-full p-2 pt-14 flex sm:grid sm:grid-cols-[540px_minmax(min-content,800px)]"
+    class="min-h-screen min-w-full p-4 py-24 flex md:grid md:grid-cols-[420px_minmax(min-content,690px)]"
   >
     <div></div>
 
-    <div class="mt-4">
-      <div style="filter: hue-rotate(-180deg)">
-        {
-          production.spotify_embeds.map((embed) => (
+    <div class="w-full">
+      {
+        production.spotify_embeds.map((embed) => (
+          <div class="mb-4">
             <iframe
               class="rounded-xl"
               style="border-radius:12px"
@@ -44,10 +44,10 @@ let { production } = Astro.props;
               allowfullscreen=""
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               loading="lazy"
-            ></iframe>
-          ))
-        }
-      </div>
+            />
+          </div>
+        ))
+      }
     </div>
   </main>
 </Layout>

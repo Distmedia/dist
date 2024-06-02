@@ -9,19 +9,18 @@ import { productions } from "../assets/listen.json";
 <Layout title="Listen">
   <Navbar active="listen" />
   <main
-    class="min-h-screen min-w-full p-2 pt-14 flex sm:grid sm:grid-cols-[360px_1fr]"
+    class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[280px_minmax(min-content,690px)]"
   >
     <div></div>
 
     <div class="flex flex-col">
       {
         productions.map((production) => (
-          <a
-            href={slugify(production.title)}
-            class="hover:blur-xs transition-blur"
-          >
-            {production.title}
-          </a>
+          <div class="flex">
+            <a href={`/${production.slug}`} class="hover:blur-xs transition-blur">
+              {production.title}
+            </a>
+          </div>
         ))
       }
     </div>

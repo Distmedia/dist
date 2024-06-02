@@ -23,14 +23,14 @@ const routes = applyAttributes([
 ])
 ---
 
-<div class="sm:hidden flex fixed w-full p-2 justify-between space-x-4 text-3xl z-10">
+<div class="navbar md:hidden flex fixed w-full p-4 justify-between space-x-2 z-10">
   {!additional && routes.map(r => (<span><a href={r.href} class={r.style}>{r.display}</a></span>))}
   {additional && <span class="cursor-default">{additional}</span>}
-  {additional && <a href={back} class="hover:blur-xs transition-blur">x</a>}
+  {additional && <a href={back} class="hover:blur-xs transition-blur !text-4xl -translate-y-2">x</a>}
 </div>
 
-<div class="hidden sm:grid fixed w-full p-2 grid-cols-[180px_180px_180px_1fr_min-content] text-3xl z-10">
+<div class="navbar hidden md:grid fixed w-full p-4 grid-cols-[140px_140px_140px_1fr_min-content] z-10">
   {routes.map(r => (<span><a href={r.href} class={r.style}>{r.display}</a></span>))}
   {additional && <span class="cursor-default">{additional}</span>}
-  {additional && <a href={back} class="hover:blur-xs transition-blur">x</a>}
+  {additional && <a href={back} class="hover:blur-xs transition-blur !text-4xl -translate-y-2">x</a>}
 </div>

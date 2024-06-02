@@ -10,7 +10,7 @@ export default {
       },
       colors: {
         'karlst': {
-          green: '#FF0000',
+          green: '#14913D',
         },
 
       },

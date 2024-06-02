@@ -2,7 +2,7 @@
 import backdrops from "../assets/backdrops.json";
 
 const debounceTime = 250
-const screenBreakpoint = 640
+const screenBreakpoint = 768
 
 const videoSources = [
   { src: backdrops.desktop_video, type: "video/webm" }, 
@@ -12,10 +12,10 @@ const videoSources = [
 ]
 ---
 
+<!-- style="filter: hue-rotate(180deg)" -->
 <video 
   transition:persist
   class="fixed top-0 left-0 h-screen w-screen object-cover -z-50"
-  style="filter: hue-rotate(180deg)"
   autoplay loop muted playsinline>
 </video>
 

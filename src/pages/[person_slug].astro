@@ -29,14 +29,19 @@ let { person } = Astro.props;
 <Layout title={person.name}>
   <Navbar additional={person.name} back="/read" />
   <main
-    class="min-h-screen min-w-full p-2 pt-14 flex sm:grid sm:grid-cols-[540px_minmax(min-content,800px)]"
+    class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[420px_minmax(min-content,690px)]"
   >
     <div></div>
 
-    <div class="mt-4">
-      <!-- filter is not needed here -->
-      <img src={person.avatar} alt={person.name} class="w-full rounded-xl" style="filter: hue-rotate(-180deg)" />
-      <PText portableText={person.info} />
+    <div class="">
+      <img
+        src={person.avatar}
+        alt={person.name}
+        class="w-full rounded-xl"
+      />
+      <div class="mt-6">
+        <PText portableText={person.info} />
+      </div>
     </div>
   </main>
 </Layout>

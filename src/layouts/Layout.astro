@@ -21,23 +21,38 @@ const { title } = Astro.props;
     <ViewTransitions />
   </head>
   <body class="font-karlst text-karlst-green">
-		<Backdrop />
-		<div style="filter: hue-rotate(180deg)">
-			<slot />
-		</div>
+    <Backdrop />
+    <!-- <div style="filter: hue-rotate(180deg)"> -->
+    <div>
+      <slot />
+    </div>
+    <style is:global>
+      @font-face {
+        font-family: "KarlST";
+        src: url("/fonts/KarlST_Bold.woff2") format("woff2");
+        font-weight: bold;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      .portable-text a {
+        @apply hover:blur-xs transition-blur;
+      }
+
+      h1,
+      h6 {
+        @apply text-lg pt-4 break-words;
+      }
+
+      p,
+      a {
+        @apply text-3xl break-words;
+      }
+
+      .navbar a,
+      span {
+        @apply text-xl;
+      }
+    </style>
   </body>
-
-	<style is:global>
-    @font-face {
-      font-family: "KarlST";
-      src: url("/fonts/KarlST_Bold.woff2") format("woff2");
-      font-weight: bold;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    .portable-text a {
-      @apply hover:blur-xs transition-blur;
-    }
-  </style>
 </html>
