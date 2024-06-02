@@ -23,6 +23,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-src/assets/*
-public/media/*
+src/assets/**
+public/media/**
 !.keep

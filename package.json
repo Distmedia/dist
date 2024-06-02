@@ -8,8 +8,7 @@
     "prebuild": "node ./scripts/prebuild.js",
     "build": "astro build",
     "preview": "astro preview --host",
-    "astro": "astro",
-    "deploy": "npm run build"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/react": "^3.4.0",
