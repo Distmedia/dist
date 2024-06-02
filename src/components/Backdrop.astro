@@ -1,3 +1,17 @@
+---
+import backdrops from "../assets/backdrops.json";
+
+const debounceTime = 250
+const screenBreakpoint = 640
+
+const videoSources = [
+  { src: backdrops.desktop_video, type: "video/webm" }, 
+  { src: backdrops.desktop_video_fallback, type: "video/mp4" },
+  { src: backdrops.mobile_video, type: "video/webm", media: screenBreakpoint }, 
+  { src: backdrops.mobile_video_fallback, type: "video/mp4", media: screenBreakpoint }
+]
+---
+
 <video 
   transition:persist
   class="fixed top-0 left-0 h-screen w-screen object-cover -z-50"
@@ -5,20 +19,47 @@
   autoplay loop muted playsinline>
 </video>
 
-<script>
-  // console.log("init backdrop")
+<script is:inline define:vars={{ videoSources, debounceTime, screenBreakpoint }}>
+ let currentSources = [];
 
-  const video = document.querySelector('video');
-  const videoSources = [
-      // { src: "/dist_reel_gray.webm", type: "video/webm" }, 
-      // { src: "/dist_reel_gray.mp4", type: "video/mp4" }
-      { src: "/dist_reel_green.webm", type: "video/webm" }, 
-      { src: "/dist_reel_green.mp4", type: "video/mp4" }
-  ]
+  function setVideoSource() {
+    const video = document.querySelector('video');
+    const newSources = window.innerWidth < screenBreakpoint ? videoSources.filter(source => source.media) : videoSources.filter(source => !source.media);
 
-	for (var videoSource of videoSources) {
-    video.appendChild(Object.assign(document.createElement('source'), videoSource));
+    if (JSON.stringify(newSources) === JSON.stringify(currentSources)) {
+      return;
+    }
+
+    currentSources = newSources;
+
+    while (video.firstChild) {
+      video.firstChild.remove();
+    }
+
+    for (var videoSource of newSources) {
+      const source = document.createElement('source');
+      source.src = videoSource.src;
+      source.type = videoSource.type;
+      video.appendChild(source);
+    }
+
+    video.load();
   }
 
-	video.load();
+  function debounce(func, delay) {
+    let debounceTimer;
+    return function() {
+      const context = this;
+      const args = arguments;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    }
+  }
+
+  const handleResize = debounce(() => {
+    setVideoSource()
+  }, debounceTime);
+
+  window.addEventListener('load', setVideoSource);
+  window.addEventListener('resize', handleResize);
 </script>

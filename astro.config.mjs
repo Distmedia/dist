@@ -16,10 +16,4 @@ export default defineConfig({
       studioBasePath: '/admin'
     }),
   ],
-  redirects: {
-    // Three levels of nested routes
-    '/admin/[slug]': '/admin',
-    '/admin/[slug]/[slug]': '/admin',
-    '/admin/[slug]/[slug]/[slug]': '/admin'
-  }
 });

@@ -2,15 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 
-import { getSanity } from "../lib/api";
-import { slugify } from "../lib/helpers";
+import { productions } from "../assets/listen.json";
 
 export async function getStaticPaths() {
-  const { productions } = await getSanity(null, "productions");
-
   return productions.map((production) => {
     return {
-      params: { production_slug: slugify(production.title) },
+      params: { production_slug: production.slug },
       props: { production },
     };
   });
@@ -18,6 +15,7 @@ export async function getStaticPaths() {
 
 interface Props {
   production: {
+    slug: string;
     title: string;
     spotify_embeds: string[];
   };

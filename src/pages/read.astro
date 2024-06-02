@@ -2,10 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import PText from "../components/PText.astro";
-import { slugify } from "../lib/helpers";
 
-import { getSanity } from "../lib/api";
-const { introduction, people, additional_info } = await getSanity(null, "read");
+import { introduction, additional_info, people } from "../assets/read.json";
 ---
 
 <Layout title="Read">
@@ -20,7 +18,7 @@ const { introduction, people, additional_info } = await getSanity(null, "read");
       <h1 class="mt-4">kontakt</h1>
       {
         people.map((person) => (
-          <a href={slugify(person.name)} class="hover:blur-xs transition-blur">
+          <a href={person.slug} class="hover:blur-xs transition-blur">
             {person.name}
           </a>
         ))

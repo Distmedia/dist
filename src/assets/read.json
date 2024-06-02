@@ -1,0 +1,73 @@
+{
+  "introduction": [
+    {
+      "markDefs": [],
+      "children": [
+        {
+          "_type": "span",
+          "marks": [],
+          "text": "Vi är journalister, ljud-designers & producenter med lång erfarenhet som\ndrivs av smarta, modiga, roliga, berörande och oväntade berättelser. Kom\ntill oss i Gamla Stan i Stockholm om du har en bra historia, eller vill\nsamarbeta med oss.",
+          "_key": "1af66e8557500"
+        }
+      ],
+      "_type": "block",
+      "style": "normal",
+      "_key": "91403ed6aed3"
+    }
+  ],
+  "additional_info": [
+    {
+      "markDefs": [],
+      "children": [
+        {
+          "_key": "45ec787c878f",
+          "_type": "span",
+          "marks": [],
+          "text": "Moar here"
+        }
+      ],
+      "_type": "block",
+      "style": "normal",
+      "_key": "cf5ff12bb382"
+    },
+    {
+      "_key": "1523cd0ea660",
+      "markDefs": [
+        {
+          "_type": "link",
+          "href": "/admin",
+          "_key": "cadf1d2b01d8"
+        }
+      ],
+      "children": [
+        {
+          "_type": "span",
+          "marks": [
+            "cadf1d2b01d8"
+          ],
+          "text": "Admin",
+          "_key": "13963c428543"
+        }
+      ],
+      "_type": "block",
+      "style": "normal"
+    }
+  ],
+  "people": [
+    {
+      "slug": "skidmannen",
+      "name": "Skidmannen",
+      "avatar": "/skidmannen.webp"
+    },
+    {
+      "slug": "skidmannen2",
+      "name": "Skidmannen2",
+      "avatar": "/skidmannen2.webp"
+    },
+    {
+      "slug": "skidmannen3",
+      "name": "Skidmannen3",
+      "avatar": "/skidmannen3.webp"
+    }
+  ]
+}

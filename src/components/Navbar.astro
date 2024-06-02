@@ -10,7 +10,7 @@ const { active, additional, back } = Astro.props;
 function applyAttributes(routes) {
   return routes.map(r => {
     const display = r.id.charAt(0).toUpperCase() + r.id.slice(1)
-    const style = r.id === active ? "" : "blur-xs hover:blur-none transition-blur"
+    const style = r.id === active ? "" : "blur-xs [@media(any-hover:hover){&:hover}]:blur-none transition-blur"
 
     return { ...r, display, style }
   })

@@ -3,8 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import { slugify } from "../lib/helpers";
 
-import { getSanity } from "../lib/api";
-const { productions } = await getSanity(null, "productions");
+import { productions } from "../assets/listen.json";
 ---
 
 <Layout title="Listen">
@@ -28,4 +27,3 @@ const { productions } = await getSanity(null, "productions");
     </div>
   </main>
 </Layout>
-==

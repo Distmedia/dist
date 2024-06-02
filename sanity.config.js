@@ -2,6 +2,7 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './studio/index'
+import {media} from 'sanity-plugin-media'
 
 const singletonListItem = (S, typeName, title) =>
   S.listItem()
@@ -25,13 +26,13 @@ const structure = (S) =>
 export default defineConfig({
   name: 'default',
   title: 'Dist',
-
   projectId: '6gim9zt5',
   dataset: 'production',
 
   plugins: [
     structureTool({ structure: structure }), 
-    visionTool()
+    visionTool(),
+    media()
   ],
 
   schema: {

@@ -1,0 +1,6 @@
+{
+  "desktop_video": "/desktop_video.webm",
+  "desktop_video_fallback": "/desktop_video_fallback.mp4",
+  "mobile_video": "/mobile_video.webm",
+  "mobile_video_fallback": "/mobile_video_fallback.mp4"
+}

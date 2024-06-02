@@ -1,17 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
-
-import { getSanity } from "../lib/api";
-import { slugify } from "../lib/helpers";
 import PText from "../components/PText.astro";
 
-export async function getStaticPaths() {
-  const { people } = await getSanity(null, "people");
+import { people } from "../assets/read.json";
 
+export async function getStaticPaths() {
   return people.map((person) => {
     return {
-      params: { person_slug: slugify(person.name) },
+      params: { person_slug: person.slug },
       props: { person },
     };
   });
@@ -19,9 +16,10 @@ export async function getStaticPaths() {
 
 interface Props {
   person: {
+    slug: string;
     name: string;
     info: any;
-    avatarUrl: string;
+    avatar: string;
   };
 }
 
@@ -37,7 +35,7 @@ let { person } = Astro.props;
 
     <div class="mt-4">
       <!-- filter is not needed here -->
-      <img src={person.avatarUrl} alt={person.name} class="w-full rounded-xl" style="filter: hue-rotate(-180deg)" />
+      <img src={person.avatar} alt={person.name} class="w-full rounded-xl" style="filter: hue-rotate(-180deg)" />
       <PText portableText={person.info} />
     </div>
   </main>
