@@ -1,10 +1,21 @@
-Bilder video a primär röd
-  Färg pill
+Behöver från DIST
+  Video desktop 1920x1080
+  Video Mobile 390x844
+  Bilder på gänget
+  ALLT I PRIMÄR RÖTT RGB 255, 0, 0
+  Favicon
 
-Styling
-  h1:or etc.
+TODO
+Favicon
 
-Build steget
+SEO
+  Meta taggar
+  Manifest
+  Robot.txt
+    Crawla inte /admin
 
-Demo route (skit samma)
 
+SKITER I
+Safari bugg videon loopar inte
+Nav bar fixed?
+Pre fetcha bilderna?

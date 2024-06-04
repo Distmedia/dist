@@ -7,19 +7,18 @@ interface Props {
 
 const { active, additional, back } = Astro.props;
 
-function applyAttributes(routes) {
+function applyStyle(routes) {
   return routes.map(r => {
-    const display = r.id.charAt(0).toUpperCase() + r.id.slice(1)
     const style = r.id === active ? "" : "blur-xs [@media(any-hover:hover){&:hover}]:blur-none transition-blur"
 
-    return { ...r, display, style }
+    return { ...r, style }
   })
 }
 
-const routes = applyAttributes([
-  { id: "index", href: "/" },
-  { id: "read", href: "/read" },
-  { id: "listen", href: "/listen" },
+const routes = applyStyle([
+  { id: "index", display: "DIST", href: "/" },
+  { id: "read", display: "Läs", href: "/las" },
+  { id: "listen", display: "Lyssna", href: "/lyssna" },
 ])
 ---
 

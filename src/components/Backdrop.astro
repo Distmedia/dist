@@ -5,17 +5,20 @@ const debounceTime = 250
 const screenBreakpoint = 768
 
 const videoSources = [
-  { src: backdrops.desktop_video, type: "video/webm" }, 
-  { src: backdrops.desktop_video_fallback, type: "video/mp4" },
-  { src: backdrops.mobile_video, type: "video/webm", media: screenBreakpoint }, 
-  { src: backdrops.mobile_video_fallback, type: "video/mp4", media: screenBreakpoint }
+  { src: "/media/testdist.webm", type: "video/webm" }, 
+  { src: "/media/testdist.webm", type: "video/webm", media: screenBreakpoint }, 
 ]
+// const videoSources = [
+//   { src: backdrops.desktop_video, type: "video/webm" }, 
+//   { src: backdrops.desktop_video_fallback, type: "video/mp4" },
+//   { src: backdrops.mobile_video, type: "video/webm", media: screenBreakpoint }, 
+//   { src: backdrops.mobile_video_fallback, type: "video/mp4", media: screenBreakpoint }
+// ]
 ---
 
-<!-- style="filter: hue-rotate(180deg)" -->
 <video 
   transition:persist
-  class="fixed top-0 left-0 h-screen w-screen object-cover -z-50"
+  class="fixed top-0 left-0 h-screen w-screen object-cover -z-50 apply-filters"
   autoplay loop muted playsinline>
 </video>
 

@@ -27,21 +27,19 @@ let { person } = Astro.props;
 ---
 
 <Layout title={person.name}>
-  <Navbar additional={person.name} back="/read" />
+  <Navbar additional={person.name} back="/las" />
   <main
     class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[420px_minmax(min-content,690px)]"
   >
     <div></div>
 
-    <div class="">
+    <div class="flex flex-col-reverse md:flex-col">
       <img
         src={person.avatar}
         alt={person.name}
-        class="w-full rounded-xl"
+        class="w-full rounded-xl mt-6 md:mb-6"
       />
-      <div class="mt-6">
-        <PText portableText={person.info} />
-      </div>
+      <PText portableText={person.info} />
     </div>
   </main>
 </Layout>

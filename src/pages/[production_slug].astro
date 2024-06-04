@@ -25,13 +25,13 @@ let { production } = Astro.props;
 ---
 
 <Layout title={production.title}>
-  <Navbar additional={production.title} back="/listen" />
+  <Navbar additional={production.title} back="/lyssna" />
   <main
     class="min-h-screen min-w-full p-4 py-24 flex md:grid md:grid-cols-[420px_minmax(min-content,690px)]"
   >
     <div></div>
 
-    <div class="w-full">
+    <div class="w-full revert-filters">
       {
         production.spotify_embeds.map((embed) => (
           <div class="mb-4">

@@ -10,7 +10,7 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="overflow-y-scroll">
+<html lang="en" class="overflow-y-scroll theme">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -20,19 +20,62 @@ const { title } = Astro.props;
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <body class="font-karlst text-karlst-green">
+  <body class="font-karlst text-base-red">
     <Backdrop />
-    <!-- <div style="filter: hue-rotate(180deg)"> -->
-    <div>
+    <div class="apply-filters">
       <slot />
     </div>
     <style is:global>
+      @tailwind utilities;
+
       @font-face {
         font-family: "KarlST";
         src: url("/fonts/KarlST_Bold.woff2") format("woff2");
         font-weight: bold;
         font-style: normal;
         font-display: swap;
+      }
+
+      @layer utilities {
+        .apply-red-filter {
+          @apply hue-rotate-[0deg] saturate-[0.85] brightness-[1.3];
+        }
+
+        .apply-blue-filter {
+          @apply hue-rotate-[177deg] saturate-[0.98] brightness-[2.9];
+        }
+
+        .apply-green-filter {
+          @apply hue-rotate-[124deg] saturate-[0.4] brightness-[1.2];
+        }
+
+        .apply-purple-filter {
+          @apply hue-rotate-[291deg] saturate-[0.2] brightness-[2];
+        }
+
+        .revert-red-filter {
+          @apply hue-rotate-[0deg] saturate-[1.18] brightness-[0.77];
+        }
+
+        .revert-blue-filter {
+          @apply hue-rotate-[-177deg] saturate-[1.02] brightness-[0.34];
+        }
+
+        .revert-green-filter {
+          @apply hue-rotate-[-124deg] saturate-[2.5] brightness-[0.83];
+        }
+
+        .revert-purple-filter {
+          @apply hue-rotate-[-291deg] saturate-[5] brightness-[0.5];
+        }
+      }
+
+      .apply-filters {
+        @apply theme-red:apply-red-filter theme-blue:apply-blue-filter theme-green:apply-green-filter theme-purple:apply-purple-filter;
+      }
+
+      .revert-filters {
+        @apply theme-red:revert-red-filter theme-blue:revert-blue-filter theme-green:revert-green-filter theme-purple:revert-purple-filter;
       }
 
       .portable-text a {
@@ -54,5 +97,44 @@ const { title } = Astro.props;
         @apply text-xl;
       }
     </style>
+    <script is:inline>
+      function setTheme() {
+        const themeCandidates = [
+          "theme--green",
+          "theme--red",
+          "theme--blue",
+          "theme--purple",
+        ];
+
+        const theme =
+          themeCandidates[Math.floor(Math.random() * themeCandidates.length)];
+        localStorage.setItem("theme", theme);
+      }
+
+      function applyTheme() {
+        const theme = localStorage.getItem("theme") || "theme--green"; // fallback to green theme for saftey
+        const themeElement = document.querySelector(".theme");
+
+        themeElement.classList.forEach((className) => {
+          if (className.startsWith("theme--")) {
+            themeElement.classList.remove(className);
+          }
+        });
+
+        themeElement.classList.add(theme);
+      }
+
+      setTheme();
+      applyTheme();
+
+      document.addEventListener("astro:page-load", applyTheme);
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "z") {
+          event.preventDefault();
+          setTheme();
+          applyTheme();
+        }
+      });
+    </script>
   </body>
 </html>
