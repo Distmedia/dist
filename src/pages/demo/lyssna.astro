@@ -1,11 +1,11 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
 
-import { productions } from "../assets/listen.json";
+import { productions } from "../../assets/listen.json";
 ---
 
-<Layout title="Listen">
+<Layout title="Lyssna">
   <Navbar active="listen" />
   <main
     class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[280px_minmax(min-content,690px)]"
@@ -16,7 +16,7 @@ import { productions } from "../assets/listen.json";
       {
         productions.map((production) => (
           <div class="flex">
-            <a href={`/${production.slug}`} class="hover:blur-xs transition-blur">
+            <a href={`/demo/${production.slug}`}>
               {production.title}
             </a>
           </div>

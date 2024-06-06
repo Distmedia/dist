@@ -88,6 +88,36 @@ export const schemaTypes = [
           accept: 'video/mp4'
         }
       },
+      {
+        title: 'Favicon', 
+        name: 'favicon',
+        type: 'image', 
+        validation: rule => rule.required(),
+        options: {
+          accept: 'image/png'
+        }
+      },
+      {
+        title: 'Thumbnail', 
+        name: 'thumbnail',
+        description: 'Shown in link previews',
+        type: 'image', 
+        validation: rule => rule.required(),
+      },
+      {
+        title: 'Meta description',
+        name: 'meta_description',
+        description: 'SEO description',
+        type: 'text',
+        default: '',
+      },
+      {
+        title: 'Meta keywords',
+        name: 'meta_keywords',
+        description: 'SEO keywords',
+        type: 'string',
+        default: '',
+      }
     ]
   },
 

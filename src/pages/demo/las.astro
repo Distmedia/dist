@@ -1,12 +1,12 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-import PText from "../components/PText.astro";
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import PText from "../../components/PText.astro";
 
-import { introduction, additional_info, people } from "../assets/read.json";
+import { introduction, additional_info, people } from "../../assets/read.json";
 ---
 
-<Layout title="Read">
+<Layout title="Läs">
   <Navbar active="read" />
   <main
     class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[140px_minmax(min-content,690px)]"
@@ -19,7 +19,7 @@ import { introduction, additional_info, people } from "../assets/read.json";
       {
         people.map((person) => (
           <div class="flex">
-            <a href={`/${person.slug}`} class="hover:blur-xs transition-blur">
+            <a href={`/demo/${person.slug}`}>
               {person.name}
             </a>
           </div>

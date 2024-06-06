@@ -1,6 +1,7 @@
 ---
 import { ViewTransitions } from "astro:transitions";
 import Backdrop from "../components/Backdrop.astro";
+import { faviconUrl, thumbnailUrl, meta_description, meta_keywords } from "../assets/site.json";
 
 interface Props {
   title: string;
@@ -10,17 +11,38 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="overflow-y-scroll theme">
+<html lang="en" class="theme">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta http-equiv="content-language" content="sv">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <meta name="generator" content={Astro.generator} />
+    <meta name="keywords" content={meta_keywords}>
+    <meta name="description" content={meta_description}>
+
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={meta_description}>
+    <meta property="og:image" content={thumbnailUrl}>
+
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={meta_description}>
+    <meta name="twitter:image" content={thumbnailUrl}>
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
+    <link
+      rel="preload"
+      crossorigin="anonymous"
+      as="font"
+      href="/fonts/KarlST_Bold.woff2"
+      type="font/woff2"
+    />
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <body class="font-karlst text-base-red">
+  <!-- <body class="font-karlst text-base-red">  -->
+  <body class="font-karlst text-[#257F3D]"> 
     <Backdrop />
     <div class="apply-filters">
       <slot />
@@ -78,23 +100,20 @@ const { title } = Astro.props;
         @apply theme-red:revert-red-filter theme-blue:revert-blue-filter theme-green:revert-green-filter theme-purple:revert-purple-filter;
       }
 
-      .portable-text a {
-        @apply hover:blur-xs transition-blur;
+      body {
+        @apply selection:bg-base-red/20
       }
 
-      h1,
-      h6 {
+      h1, h2, h3, h4, h5, h6 {
         @apply text-lg pt-4 break-words;
       }
 
-      p,
       a {
-        @apply text-3xl break-words;
+        @apply text-3xl hover:blur-xs transition-blur break-words;
       }
 
-      .navbar a,
-      span {
-        @apply text-xl;
+      p {
+        @apply text-3xl break-words;
       }
     </style>
     <script is:inline>

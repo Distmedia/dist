@@ -4,18 +4,11 @@ Behöver från DIST
   Bilder på gänget
   ALLT I PRIMÄR RÖTT RGB 255, 0, 0
   Favicon
+  Thumbnail bild
 
 TODO
-Favicon
-
-SEO
-  Meta taggar
-  Manifest
-  Robot.txt
-    Crawla inte /admin
-
+Ladda upp media
 
 SKITER I
 Safari bugg videon loopar inte
 Nav bar fixed?
-Pre fetcha bilderna?

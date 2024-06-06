@@ -1,9 +1,11 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-import PText from "../components/PText.astro";
+import { Image } from 'astro:assets';
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import PText from "../../components/PText.astro";
 
-import { people } from "../assets/read.json";
+import { people } from "../../assets/read.json";
+const images = import.meta.glob('/public/media/*.{jpeg,jpg,png,gif,webp}')
 
 export async function getStaticPaths() {
   return people.map((person) => {
@@ -23,22 +25,20 @@ interface Props {
   };
 }
 
+
 let { person } = Astro.props;
 ---
 
+
 <Layout title={person.name}>
-  <Navbar additional={person.name} back="/las" />
+  <Navbar additional={person.name} back="/demo/las" />
   <main
     class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[420px_minmax(min-content,690px)]"
   >
     <div></div>
 
     <div class="flex flex-col-reverse md:flex-col">
-      <img
-        src={person.avatar}
-        alt={person.name}
-        class="w-full rounded-xl mt-6 md:mb-6"
-      />
+      <Image src={images[`/public${person.avatar}`]()} alt={person.name} class="w-full rounded-xl mt-6 md:mb-6" />
       <PText portableText={person.info} />
     </div>
   </main>

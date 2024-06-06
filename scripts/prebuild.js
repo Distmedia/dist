@@ -113,6 +113,31 @@ console.log('Videos passed sanity check')
 await createJson(backdropsJson, "src/assets/backdrops.json");
 
 
+// site
+const siteQuery = `
+*[_id == "site"][0] {
+  meta_description,
+  meta_keywords,
+  "faviconUrl": favicon.asset->url,
+  "thumbnailUrl": thumbnail.asset->url
+}`;
+const siteResponse = await get(siteQuery)
+
+let siteJson = JSON.parse(JSON.stringify(siteResponse));
+
+const extension_favicon = new URL(siteResponse.faviconUrl).pathname.split(".").pop();
+const path_favicon = `/favicon.${extension_favicon}`;
+await downloadAsset(siteResponse.faviconUrl, `public${path_favicon}`);
+siteJson.faviconUrl = path_favicon
+
+const extension_thumbnail = new URL(siteResponse.thumbnailUrl).pathname.split(".").pop();
+const path_thumbnail = `/media/thumbnail.${extension_thumbnail}`;
+await downloadAsset(siteResponse.thumbnailUrl, `public${path_thumbnail}`);
+siteJson.thumbnailUrl = path_thumbnail
+
+await createJson(siteJson, "src/assets/site.json");
+
+
 // read
 const readQuery = `
 *[_id == "read"][0] {
