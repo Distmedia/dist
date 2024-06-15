@@ -9,6 +9,9 @@ Behöver från DIST
 TODO
 Ladda upp media
 
-SKITER I
-Safari bugg videon loopar inte
-Nav bar fixed?
+Safari shit
+Blur ser lite konstig ut med filter
+Safari bugg videon loopar inte - fixat!
+
+https://webkit.org/blog/6784/new-video-policies-for-ios/
+https://stackoverflow.com/questions/55923054/safari-not-retrieving-mp4-video-from-cache-and-sometimes-timeout-when-downloadi

@@ -9,7 +9,7 @@ const { active, additional, back } = Astro.props;
 
 function applyStyle(routes) {
   return routes.map(r => {
-    const style = r.id === active ? "text-xl" : "text-xl blur-xs [@media(any-hover:hover){&:hover}]:blur-none transition-blur"
+    const style = r.id === active ? "" : "blur-xs hover:blur-none transition-blur"
 
     return { ...r, style }
   })
@@ -22,14 +22,16 @@ const routes = applyStyle([
 ])
 ---
 
-<div class="navbar md:hidden flex fixed w-full p-4 justify-between space-x-2 z-10">
-  {!additional && routes.map(r => (<a href={r.href} class={r.style}>{r.display}</a>))}
-  {additional && <span class="cursor-default text-xl">{additional}</span>}
+<!-- Mobile -->
+<div class="navbar md:hidden flex fixed w-full p-4 justify-between space-x-2 z-50">
+  {!additional && routes.map(r => (<span><a href={r.href} class={r.style}>{r.display}</a></span>))}
+  {additional && <span class="cursor-default">{additional}</span>}
   {additional && <a href={back} class="hover:blur-xs transition-blur !text-4xl -translate-y-2">x</a>}
 </div>
 
-<div class="navbar hidden md:grid fixed w-full p-4 grid-cols-[140px_140px_140px_1fr_min-content] z-10">
-  {routes.map(r => (<a href={r.href} class={r.style}>{r.display}</a>))}
-  {additional && <span class="cursor-default text-xl">{additional}</span>}
+<!-- Desktop -->
+<div class="navbar hidden md:grid fixed w-full p-4 grid-cols-[140px_140px_140px_1fr_min-content] z-50">
+  {routes.map(r => (<span><a href={r.href} class={r.style}>{r.display}</a></span>))}
+  {additional && <span class="cursor-default">{additional}</span>}
   {additional && <a href={back} class="hover:blur-xs transition-blur text-4xl -translate-y-2">x</a>}
 </div>

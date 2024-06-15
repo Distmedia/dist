@@ -38,7 +38,7 @@ let { person } = Astro.props;
     <div></div>
 
     <div class="flex flex-col-reverse md:flex-col">
-      <Image src={images[`/public${person.avatar}`]()} alt={person.name} class="w-full rounded-xl mt-6 md:mb-6" />
+      <Image src={images[`/public${person.avatar}`]()} alt={person.name} class="w-full rounded-xl mt-6 md:mb-6 apply-filters" />
       <PText portableText={person.info} />
     </div>
   </main>

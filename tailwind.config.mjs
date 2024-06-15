@@ -19,6 +19,7 @@ export default {
       },
       blur: {
         xs: '2px',
+        xxs: '1px',
       },
     },
 	},

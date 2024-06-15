@@ -1,32 +1,67 @@
 ---
 import backdrops from "../assets/backdrops.json";
 
-const debounceTime = 250
-const screenBreakpoint = 768
+const debounceTime = 250;
+const screenBreakpoint = 768;
 
 const videoSources = [
-  { src: backdrops.desktop_video, type: "video/webm" }, 
-  { src: backdrops.desktop_video_fallback, type: "video/mp4" },
-  { src: backdrops.mobile_video, type: "video/webm", media: screenBreakpoint }, 
-  { src: backdrops.mobile_video_fallback, type: "video/mp4", media: screenBreakpoint }
-]
+  { src: backdrops.desktop_video, type: "video/webm", url: undefined },
+  { src: backdrops.desktop_video_fallback, type: "video/mp4", url: undefined },
+  {
+    src: backdrops.mobile_video,
+    type: "video/webm",
+    media: screenBreakpoint,
+    url: undefined,
+  },
+  {
+    src: backdrops.mobile_video_fallback,
+    type: "video/mp4",
+    media: screenBreakpoint,
+    url: undefined,
+  },
+];
 ---
 
-<video 
+<video
   transition:persist
   class="fixed top-0 left-0 h-screen w-screen object-cover -z-50 apply-filters"
-  autoplay loop muted playsinline>
+  playsinline
+  muted
+>
 </video>
 
-<script is:inline define:vars={{ videoSources, debounceTime, screenBreakpoint }}>
- let currentSources = [];
+<script is:inline define:vars={{ videoSources, debounceTime, screenBreakpoint }}
+>
+  let currentSources = [];
 
-  function setVideoSource() {
-    const video = document.querySelector('video');
-    const newSources = window.innerWidth < screenBreakpoint ? videoSources.filter(source => source.media) : videoSources.filter(source => !source.media);
+  const video = document.querySelector("video");
 
-    if (JSON.stringify(newSources) === JSON.stringify(currentSources)) {
-      return;
+  video.addEventListener("ended", function () {
+    setVideoSource((force = true));
+  });
+
+  async function applyObjectsUrls() {
+    for (var videoSource of videoSources) {
+      if (videoSource.url === undefined) {
+        const videoRequest = await fetch(videoSource.src);
+        const blob = await videoRequest.blob();
+        videoSource.url = window.URL.createObjectURL(blob);
+      }
+    }
+  }
+
+  async function setVideoSource(force = false) {
+    await applyObjectsUrls();
+
+    const newSources =
+      window.innerWidth < screenBreakpoint
+        ? videoSources.filter((source) => source.media)
+        : videoSources.filter((source) => !source.media);
+
+    if (!force) {
+      if (JSON.stringify(newSources) === JSON.stringify(currentSources)) {
+        return;
+      }
     }
 
     currentSources = newSources;
@@ -36,29 +71,30 @@ const videoSources = [
     }
 
     for (var videoSource of newSources) {
-      const source = document.createElement('source');
-      source.src = videoSource.src;
+      const source = document.createElement("source");
+      source.src = videoSource.url || videoSource.src;
       source.type = videoSource.type;
       video.appendChild(source);
     }
 
     video.load();
+    video.play();
   }
 
   function debounce(func, delay) {
     let debounceTimer;
-    return function() {
+    return function () {
       const context = this;
       const args = arguments;
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => func.apply(context, args), delay);
-    }
+    };
   }
 
   const handleResize = debounce(() => {
-    setVideoSource()
+    setVideoSource();
   }, debounceTime);
 
-  window.addEventListener('load', setVideoSource);
-  window.addEventListener('resize', handleResize);
+  window.addEventListener("load", setVideoSource);
+  window.addEventListener("resize", handleResize);
 </script>
