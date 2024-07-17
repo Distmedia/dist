@@ -1,0 +1,26 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+
+import { productions } from "../assets/listen.json";
+---
+
+<Layout title="Lyssna">
+  <Navbar />
+  <main
+    class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[20vw_minmax(min-content,690px)]"
+  >
+    <div></div>
+
+    <div class="flex flex-col">
+      {
+        productions.map((production) => (
+          <div class="flex">
+            {production.link && <a href={`/${production.link}`} target="_blank">{production.title}</a>}
+            {!production.link && <a href={production.slug}>{production.title}</a>}
+          </div>
+        ))
+      }
+    </div>
+  </main>
+</Layout>

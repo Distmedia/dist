@@ -5,44 +5,63 @@ const debounceTime = 250;
 const screenBreakpoint = 768;
 
 const videoSources = [
-  { src: backdrops.desktop_video, type: "video/webm", url: undefined },
-  { src: backdrops.desktop_video_fallback, type: "video/mp4", url: undefined },
+  { src: backdrops.desktop_video_red, type: "video/mp4", url: undefined, theme: "theme--red" },
+  { src: backdrops.desktop_video_green, type: "video/mp4", url: undefined, theme: "theme--green" },
+  { src: backdrops.desktop_video_blue, type: "video/mp4", url: undefined, theme: "theme--blue" },
+  { src: backdrops.desktop_video_purple, type: "video/mp4", url: undefined, theme: "theme--purple" },
   {
-    src: backdrops.mobile_video,
-    type: "video/webm",
-    media: screenBreakpoint,
-    url: undefined,
-  },
-  {
-    src: backdrops.mobile_video_fallback,
+    src: backdrops.mobile_video_red,
     type: "video/mp4",
     media: screenBreakpoint,
     url: undefined,
+    theme: "theme--red"
+  },
+  {
+    src: backdrops.mobile_video_green,
+    type: "video/mp4",
+    media: screenBreakpoint,
+    url: undefined,
+    theme: "theme--green"
+  },
+  {
+    src: backdrops.mobile_video_blue,
+    type: "video/mp4",
+    media: screenBreakpoint,
+    url: undefined,
+    theme: "theme--blue"
+  },
+  {
+    src: backdrops.mobile_video_purple,
+    type: "video/mp4",
+    media: screenBreakpoint,
+    url: undefined,
+    theme: "theme--purple"
   },
 ];
 ---
 
 <video
   transition:persist
-  class="fixed top-0 left-0 h-screen w-screen object-cover -z-50 apply-filters"
+  class="fixed w-screen h-screen object-cover object-bottom bottom-0 -z-50"
   playsinline
   muted
 >
 </video>
 
-<script is:inline define:vars={{ videoSources, debounceTime, screenBreakpoint }}
->
+<script is:inline define:vars={{ videoSources, debounceTime, screenBreakpoint }}>
   let currentSources = [];
 
   const video = document.querySelector("video");
 
   video.addEventListener("ended", function () {
-    setVideoSource((force = true));
+    video.play();
   });
 
   async function applyObjectsUrls() {
+    const theme = localStorage.getItem("theme")
+
     for (var videoSource of videoSources) {
-      if (videoSource.url === undefined) {
+      if (videoSource.url === undefined && videoSource.theme === theme) {
         const videoRequest = await fetch(videoSource.src);
         const blob = await videoRequest.blob();
         videoSource.url = window.URL.createObjectURL(blob);
@@ -50,20 +69,16 @@ const videoSources = [
     }
   }
 
-  async function setVideoSource(force = false) {
+  async function setVideoSource() {
     await applyObjectsUrls();
+
+    const theme = localStorage.getItem("theme")
 
     const newSources =
       window.innerWidth < screenBreakpoint
-        ? videoSources.filter((source) => source.media)
-        : videoSources.filter((source) => !source.media);
-
-    if (!force) {
-      if (JSON.stringify(newSources) === JSON.stringify(currentSources)) {
-        return;
-      }
-    }
-
+        ? videoSources.filter((source) => source.media && source.theme === theme)
+        : videoSources.filter((source) => !source.media && source.theme === theme);
+    
     currentSources = newSources;
 
     while (video.firstChild) {
@@ -73,6 +88,7 @@ const videoSources = [
     for (var videoSource of newSources) {
       const source = document.createElement("source");
       source.src = videoSource.url || videoSource.src;
+      // source.src = videoSource.src;
       source.type = videoSource.type;
       video.appendChild(source);
     }

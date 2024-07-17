@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs, { link } from "fs";
 import https from "https";
 import { createClient } from "@sanity/client";
 import { slugify } from "../src/lib/helpers.js";
@@ -63,43 +63,75 @@ async function createJson(jsonData, outputLocationPath) {
 // backdrops
 const backdropsQuery = `
 *[_id == "site"][0] {
-  desktop_video {
-    "videoUrl": asset->url,
+  desktop_video_green {
+    "videoUrlGreen": asset->url,
   },
-  desktop_video_fallback {
-    "videoUrl": asset->url,
-  },  
-  mobile_video {
-    "videoUrl": asset->url,
+  desktop_video_red {
+    "videoUrlRed": asset->url,
   },
-  mobile_video_fallback {
-    "videoUrl": asset->url,
-  }
+  desktop_video_blue {
+    "videoUrlBlue": asset->url,
+  },
+  desktop_video_purple {
+    "videoUrlPurple": asset->url,
+  },
+  mobile_video_green {
+    "videoUrlGreen": asset->url,
+  },
+  mobile_video_red {
+    "videoUrlRed": asset->url,
+  },
+  mobile_video_blue {
+    "videoUrlBlue": asset->url,
+  },
+  mobile_video_purple {
+    "videoUrlPurple": asset->url,
+  },
 }`;
 const backdropsResponse = await get(backdropsQuery)
 
 await downloadAsset(
-  backdropsResponse.desktop_video.videoUrl,
-  "public/media/desktop_video.webm"
+  backdropsResponse.desktop_video_green.videoUrlGreen,
+  "public/media/desktop_video_green.mp4"
 );
 await downloadAsset(
-  backdropsResponse.desktop_video_fallback.videoUrl,
-  "public/media/desktop_video_fallback.mp4"
+  backdropsResponse.desktop_video_red.videoUrlRed,
+  "public/media/desktop_video_red.mp4"
 );
 await downloadAsset(
-  backdropsResponse.mobile_video.videoUrl,
-  "public/media/mobile_video.webm"
+  backdropsResponse.desktop_video_blue.videoUrlBlue,
+  "public/media/desktop_video_blue.mp4"
 );
 await downloadAsset(
-  backdropsResponse.mobile_video_fallback.videoUrl,
-  "public/media/mobile_video_fallback.mp4"
+  backdropsResponse.desktop_video_purple.videoUrlPurple,
+  "public/media/desktop_video_purple.mp4"
+);
+await downloadAsset(
+  backdropsResponse.mobile_video_green.videoUrlGreen,
+  "public/media/mobile_video_green.mp4"
+);
+await downloadAsset(
+  backdropsResponse.mobile_video_red.videoUrlRed,
+  "public/media/mobile_video_red.mp4"
+);
+await downloadAsset(
+  backdropsResponse.mobile_video_blue.videoUrlBlue,
+  "public/media/mobile_video_blue.mp4"
+);
+await downloadAsset(
+  backdropsResponse.mobile_video_purple.videoUrlPurple,
+  "public/media/mobile_video_purple.mp4"
 );
 
 const backdropsJson = {
-  desktop_video: "/media/desktop_video.webm",
-  desktop_video_fallback: "/media/desktop_video_fallback.mp4",
-  mobile_video: "/media/mobile_video.webm",
-  mobile_video_fallback: "/media/mobile_video_fallback.mp4",
+  desktop_video_green: "/media/desktop_video_green.mp4",
+  desktop_video_red: "/media/desktop_video_red.mp4",
+  desktop_video_blue: "/media/desktop_video_blue.mp4",
+  desktop_video_purple: "/media/desktop_video_purple.mp4",
+  mobile_video_green: "/media/mobile_video_green.mp4",
+  mobile_video_red: "/media/mobile_video_red.mp4",
+  mobile_video_blue: "/media/mobile_video_blue.mp4",
+  mobile_video_purple: "/media/mobile_video_purple.mp4",
 };
 
 // Sanity check that all backdrops got donwloaded
@@ -146,7 +178,10 @@ const readQuery = `
   people[] {
     name,
     info,
-    "avatarUrl": avatar.asset->url
+    "avatarUrlGreen": avatar_green.asset->url,
+    "avatarUrlRed": avatar_red.asset->url,
+    "avatarUrlBlue": avatar_blue.asset->url,
+    "avatarUrlPurple": avatar_purple.asset->url
   }
 }`;
 const readResponse = await get(readQuery)
@@ -154,16 +189,30 @@ const readResponse = await get(readQuery)
 let readJson = JSON.parse(JSON.stringify(readResponse));
 readJson.people = [];
 for (const person of readResponse.people) {
-  const extension = new URL(person.avatarUrl).pathname.split(".").pop();
-  const path = `/media/${slugify(person.name)}.${extension}`;
+  const extension_green = new URL(person.avatarUrlGreen).pathname.split(".").pop();
+  const path_green = `/media/${slugify(person.name)}_green.${extension_green}`;
+  await downloadAsset(person.avatarUrlGreen, `public${path_green}`);
 
-  await downloadAsset(person.avatarUrl, `public${path}`);
+  const extension_red = new URL(person.avatarUrlRed).pathname.split(".").pop();
+  const path_red = `/media/${slugify(person.name)}_red.${extension_red}`;
+  await downloadAsset(person.avatarUrlRed, `public${path_red}`);
+
+  const extension_blue = new URL(person.avatarUrlBlue).pathname.split(".").pop();
+  const path_blue = `/media/${slugify(person.name)}_blue.${extension_blue}`;
+  await downloadAsset(person.avatarUrlBlue, `public${path_blue}`);
+
+  const extension_purple = new URL(person.avatarUrlPurple).pathname.split(".").pop();
+  const path_purple = `/media/${slugify(person.name)}_purple.${extension_purple}`;
+  await downloadAsset(person.avatarUrlPurple, `public${path_purple}`);
 
   readJson.people.push({
     slug: slugify(person.name),
     name: person.name,
     info: person.info,
-    avatar: path,
+    avatar_red: path_red,
+    avatar_green: path_green,
+    avatar_blue: path_blue,
+    avatar_purple: path_purple,
   });
 }
 
@@ -174,6 +223,7 @@ const listenQuery = `
 *[_id == "listen"][0] {
   productions[] {
     title,
+    link,
     spotify_embeds
   }
 }`;
@@ -184,6 +234,7 @@ for (const production of listenResponse.productions) {
   listenJson.productions.push({
     slug: slugify(production.title),
     title: production.title,
+    link: production.link,
     spotify_embeds: production.spotify_embeds,
   });
 }

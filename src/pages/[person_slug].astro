@@ -1,0 +1,49 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import PText from "../components/PText.astro";
+
+import { people } from "../assets/read.json";
+
+export async function getStaticPaths() {
+  return people.map((person) => {
+    return {
+      params: { person_slug: person.slug },
+      props: { person },
+    };
+  });
+}
+
+interface Props {
+  person: {
+    slug: string;
+    name: string;
+    info: any;
+    avatar_red: string;
+    avatar_green: string;
+    avatar_blue: string;
+    avatar_purple: string;
+  };
+}
+
+
+let { person } = Astro.props;
+---
+
+<Layout title={person.name}>
+  <div class="-z-40 w-screen h-screen bg-white/80 fixed"></div>
+  <Navbar additional={person.name} back="/las" />
+  <main
+    class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[30vw_minmax(min-content,690px)]"
+  >
+    <div></div>
+
+    <div class="flex flex-col">
+      <img src={`${person.avatar_red}`} alt={person.name} class="hidden theme-red:block w-full rounded-xl my-6" />
+      <img src={`${person.avatar_green}`} alt={person.name} class="hidden theme-green:block w-full rounded-xl my-6" />
+      <img src={`${person.avatar_blue}`} alt={person.name} class="hidden theme-blue:block w-full rounded-xl my-6" />
+      <img src={`${person.avatar_purple}`} alt={person.name} class="hidden theme-purple:block w-full rounded-xl my-6" />
+      <PText portableText={person.info} />
+    </div>
+  </main>
+</Layout>

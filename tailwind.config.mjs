@@ -11,7 +11,11 @@ export default {
       },
       colors: {
         'base': {
-          'red': '#FF0000',
+          'red': '#FB2F1F',
+          'green': '#13913C',
+          'blue': '#24C5E7',
+          'purple': '#A584A4',
+
         },
       },
       transitionProperty: {

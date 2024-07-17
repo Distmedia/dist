@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import PText from "../components/PText.astro";
+
+import { introduction, additional_info, people } from "../assets/read.json";
+---
+
+<Layout title="Läs">
+  <Navbar />
+  <main
+    class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[10vw_minmax(min-content,690px)]"
+  >
+    <div></div>
+    <div>
+      <PText portableText={introduction} />
+
+      <h1 class="flex flex-col">kontakt</h1>
+      {
+        people.map((person) => (
+          <div class="flex">
+            <a href={`/${person.slug}`}>
+              {person.name}
+            </a>
+          </div>
+        ))
+      }
+
+      <PText portableText={additional_info} />
+    </div>
+  </main>
+</Layout>

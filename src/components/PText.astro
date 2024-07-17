@@ -6,3 +6,10 @@ const { portableText } = Astro.props;
 <div class="portable-text">
   <PortableText value={portableText} />
 </div>
+
+<script is:inline>
+  const anchors = document.querySelectorAll('.portable-text a');
+  anchors.forEach(anchor => {
+    anchor.setAttribute('target', '_blank');
+  });
+</script>

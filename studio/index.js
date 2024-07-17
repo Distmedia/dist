@@ -27,7 +27,7 @@ function slugable(str) {
 function spotifyEmbedable(str) {
   const str_ = str || ""
 
-  if (str_.startsWith("https://open.spotify.com/embed/track/") && str_.endsWith("?utm_source=generator")) {
+  if (str_.startsWith("https://open.spotify.com/embed/episode/") && str_.endsWith("?utm_source=generator")) {
     return true
   }
 
@@ -49,19 +49,8 @@ export const schemaTypes = [
     },
     fields: [
       {
-        name: 'desktop_video',
-        title: 'Desktop video',
-        description: 'Desktop video (webm)',
-        type: 'file',
-        validation: rule => rule.required(),
-        options: {
-          accept: 'video/webm'
-        }
-      },
-      {
-        name: 'desktop_video_fallback',
-        title: 'Desktop video (fallback)',
-        description: 'Desktop video fallback (mp4)',
+        name: 'desktop_video_green',
+        title: 'Desktop video green',
         type: 'file',
         validation: rule => rule.required(),
         options: {
@@ -69,19 +58,8 @@ export const schemaTypes = [
         }
       },
       {
-        name: 'mobile_video',
-        title: 'Mobile video',
-        description: 'Mobile video (webm)',
-        type: 'file',
-        validation: rule => rule.required(),
-        options: {
-          accept: 'video/webm'
-        }
-      },
-      {
-        name: 'mobile_video_fallback',
-        title: 'Mobile video (fallback)',
-        description: 'Mobile video fallback (mp4)',
+        name: 'desktop_video_red',
+        title: 'Desktop video red',
         type: 'file',
         validation: rule => rule.required(),
         options: {
@@ -89,18 +67,69 @@ export const schemaTypes = [
         }
       },
       {
-        title: 'Favicon', 
-        name: 'favicon',
-        type: 'image', 
+        name: 'desktop_video_blue',
+        title: 'Desktop video blue',
+        type: 'file',
         validation: rule => rule.required(),
         options: {
-          accept: 'image/png'
+          accept: 'video/mp4'
+        }
+      },
+      {
+        name: 'desktop_video_purple',
+        title: 'Desktop video purple',
+        type: 'file',
+        validation: rule => rule.required(),
+        options: {
+          accept: 'video/mp4'
+        }
+      },
+      {
+        name: 'mobile_video_green',
+        title: 'Mobile video green',
+        type: 'file',
+        validation: rule => rule.required(),
+        options: {
+          accept: 'video/mp4'
+        }
+      },
+      {
+        name: 'mobile_video_red',
+        title: 'Mobile video red',
+        type: 'file',
+        validation: rule => rule.required(),
+        options: {
+          accept: 'video/mp4'
+        }
+      },
+      {
+        name: 'mobile_video_blue',
+        title: 'Mobile video blue',
+        type: 'file',
+        validation: rule => rule.required(),
+        options: {
+          accept: 'video/mp4'
+        }
+      },
+      {
+        name: 'mobile_video_purple',
+        title: 'Mobile video purple',
+        type: 'file',
+        validation: rule => rule.required(),
+        options: {
+          accept: 'video/mp4'
         }
       },
       {
         title: 'Thumbnail', 
         name: 'thumbnail',
         description: 'Shown in link previews',
+        type: 'image', 
+        validation: rule => rule.required(),
+      },
+      {
+        title: 'Favicon', 
+        name: 'favicon',
         type: 'image', 
         validation: rule => rule.required(),
       },
@@ -199,9 +228,27 @@ export const schemaTypes = [
         validation: rule => rule.required().custom(str => slugable(str))
       },
       {
-        name: 'avatar', 
+        name: 'avatar_green', 
         type: 'image', 
-        title: 'Avatar', 
+        title: 'Avatar green', 
+        validation: rule => rule.required(),
+      },
+      {
+        name: 'avatar_red', 
+        type: 'image', 
+        title: 'Avatar red', 
+        validation: rule => rule.required(),
+      },
+      {
+        name: 'avatar_blue', 
+        type: 'image', 
+        title: 'Avatar blue', 
+        validation: rule => rule.required(),
+      },
+      {
+        name: 'avatar_purple', 
+        type: 'image', 
+        title: 'Avatar purple', 
         validation: rule => rule.required(),
       },
       {
@@ -229,6 +276,11 @@ export const schemaTypes = [
         type: 'string', 
         title: 'Title',
         validation: rule => rule.required().custom(str => slugable(str))
+      },
+      {
+        name: 'link', 
+        type: 'string', 
+        title: 'Link',
       },
       {
         name: 'spotify_embeds',

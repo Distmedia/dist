@@ -1,15 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
 ---
 
 <Layout title="DIST">
-	<main class="flex w-full p-4 pt-14 h-screen">
-		<div class="flex flex-col mx-auto space-y-8 pt-9">
-			<h1 class="text-9xl">DIST</h1>
-			<a class="text-base mx-auto px-1" href="mailto:info@distmedia.se">info@distmedia.se</a>
-		</div>
+  <Navbar />
+
+	<main class="w-full p-4 pt-14" >
 	</main>
-	<script is:inline>
-		document.getElementsByTagName('video')[0].classList.add('hidden');
-	</script>
 </Layout>

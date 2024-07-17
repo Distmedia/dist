@@ -1,8 +1,8 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Navbar from "../../components/Navbar.astro";
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
 
-import { productions } from "../../assets/listen.json";
+import { productions } from "../assets/listen.json";
 
 export async function getStaticPaths() {
   return productions.map((production) => {
@@ -25,15 +25,15 @@ let { production } = Astro.props;
 ---
 
 <Layout title={production.title}>
-  <Navbar additional={production.title} back="/demo/lyssna" />
+  <Navbar additional={production.title} back="/lyssna" />
   <main
-    class="min-h-screen min-w-full p-4 py-24 flex md:grid md:grid-cols-[420px_minmax(min-content,690px)]"
+    class="min-h-screen min-w-full p-4 py-24 flex md:grid md:grid-cols-[30vw_minmax(min-content,690px)]"
   >
     <div></div>
 
     <div class="w-full ">
       {
-        production.spotify_embeds.map((embed) => (
+        (production?.spotify_embeds || []).map((embed) => (
           <div class="mb-4">
             <iframe
               class="rounded-xl"
