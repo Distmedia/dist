@@ -22,8 +22,8 @@ const routes = [
 
 <!-- Desktop -->
 <div class="navbar hidden md:grid fixed w-full p-4 grid-cols-[10vw_10vw_10vw_1fr_min-content] z-50">
-<!-- <div class="navbar hidden md:grid fixed w-full p-4 grid-cols-[140px_140px_140px_1fr_min-content] z-50"> -->
   {routes.map(r => (<span><a href={r.href} class="blur-xs hover:blur-none transition-blur">{r.display}</a></span>))}
   {additional && <span class="cursor-default">{additional}</span>}
   {additional && <a href={back} class="hover:blur-xs transition-blur text-4xl -translate-y-2">x</a>}
 </div>
+

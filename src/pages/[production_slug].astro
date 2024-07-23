@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar.astro";
 import { productions } from "../assets/listen.json";
 
 export async function getStaticPaths() {
-  return productions.map((production) => {
+  return productions.filter(p => p.link === null).map((production) => {
     return {
       params: { production_slug: production.slug },
       props: { production },

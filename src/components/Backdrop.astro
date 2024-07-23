@@ -70,7 +70,7 @@ const videoSources = [
   }
 
   async function setVideoSource() {
-    await applyObjectsUrls();
+    // await applyObjectsUrls();
 
     const theme = localStorage.getItem("theme")
 
@@ -87,8 +87,8 @@ const videoSources = [
 
     for (var videoSource of newSources) {
       const source = document.createElement("source");
-      source.src = videoSource.url || videoSource.src;
-      // source.src = videoSource.src;
+      // source.src = videoSource.url || videoSource.src;
+      source.src = videoSource.src;
       source.type = videoSource.type;
       video.appendChild(source);
     }

@@ -16,8 +16,8 @@ import { productions } from "../assets/listen.json";
       {
         productions.map((production) => (
           <div class="flex">
-            {production.link && <a href={`/${production.link}`} target="_blank">{production.title}</a>}
-            {!production.link && <a href={production.slug}>{production.title}</a>}
+            {production.link && <a href={`${production.link}`} target="_blank">{production.title}</a>}
+            {!production.link && <a href={`/${production.slug}`}>{production.title}</a>}
           </div>
         ))
       }
