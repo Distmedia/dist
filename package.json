@@ -6,6 +6,7 @@
     "dev": "astro dev --host",
     "start": "astro dev --host",
     "prebuild": "node ./scripts/prebuild.js",
+    "prebuild:clean": "node ./scripts/prebuild_clean.js",
     "build": "astro build",
     "preview": "astro preview --host",
     "astro": "astro"

@@ -1,4 +1,4 @@
-import fs, { link } from "fs";
+import fs from "fs";
 import https from "https";
 import { createClient } from "@sanity/client";
 import { slugify } from "../src/lib/helpers.js";

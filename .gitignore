@@ -25,4 +25,5 @@ pnpm-debug.log*
 
 src/assets/**
 public/media/**
+public/favicon.png
 !.keep

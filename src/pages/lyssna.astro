@@ -8,11 +8,10 @@ import { productions } from "../assets/listen.json";
 <Layout title="Lyssna">
   <Navbar />
   <main
-    class="min-h-screen min-w-full p-4 py-20 flex md:grid md:grid-cols-[20vw_minmax(min-content,690px)]"
+    class="min-w-full p-4 py-20 flex md:grid md:grid-cols-[18vw_minmax(min-content,690px)]"
   >
     <div></div>
-
-    <div class="flex flex-col">
+    <div class="flex flex-col h-min">
       {
         productions.map((production) => (
           <div class="flex">

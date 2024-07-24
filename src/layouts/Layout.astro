@@ -1,12 +1,22 @@
 ---
 import { ViewTransitions } from "astro:transitions";
 import Backdrop from "../components/Backdrop.astro";
+import read from "../assets/read.json";
 import {
   faviconUrl,
   thumbnailUrl,
   meta_description,
   meta_keywords,
 } from "../assets/site.json";
+
+function extractImageLinks(data) {
+  return data.people.map(person => [
+    person.avatar_red,
+    person.avatar_green,
+    person.avatar_blue,
+    person.avatar_purple
+  ]).flat(Infinity);
+}
 
 interface Props {
   title: string;
@@ -37,12 +47,15 @@ const { title } = Astro.props;
 
     <link rel="icon" type="image/png" href={faviconUrl} />
 
+    {extractImageLinks(read).map(l => (<link rel="preload" href={l} as="image">))}
+
     <title>{title}</title>
     <ViewTransitions />
   </head>
   <body class="font-karlst apply-text-color">
     <slot />
     <Backdrop />
+
     <style is:global>
       @tailwind utilities;
 
@@ -68,17 +81,18 @@ const { title } = Astro.props;
       h4,
       h5,
       h6 {
-        @apply text-base lg:text-lg pt-4 break-words;
+        @apply text-base xl:text-lg pt-4 break-words;
       }
 
       a {
-        @apply text-2xl lg:text-3xl hover:blur-xs transition-blur break-words;
+        @apply text-xl xl:text-3xl hover:blur-xs transition-blur break-words;
       }
 
       p, span {
-        @apply text-2xl lg:text-3xl break-words;
+        @apply text-xl xl:text-3xl break-words;
       }
     </style>
+
     <script is:inline>
       function setTheme() {
         const themeCandidates = [
