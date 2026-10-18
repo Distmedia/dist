@@ -1,0 +1,20 @@
+videos:
+  desktop_red: /media/desktop_video_red.mp4
+  desktop_green: /media/desktop_video_green.mp4
+  desktop_blue: /media/desktop_video_blue.mp4
+  desktop_purple: /media/desktop_video_purple.mp4
+  mobile_red: /media/mobile_video_red.mp4
+  mobile_green: /media/mobile_video_green.mp4
+  mobile_blue: /media/mobile_video_blue.mp4
+  mobile_purple: /media/mobile_video_purple.mp4
+thumbnail: /media/thumbnail.jpg
+favicon: /media/favicon.png
+descriptions:
+  home: Vi är journalister, ljuddesigners & producenter som drivs av smarta, modiga, roliga, berörande och oväntade berättelser. Kom till oss i Gamla stan i Stockholm om du har en bra historia, eller vill samarbeta med oss.
+title: DIST
+organization:
+  email: info@dist.se
+  street_address: Skeppsbron 38
+  postal_code: 111 30
+  city: Stockholm
+  instagram: distproduktion

@@ -1,29 +1,61 @@
 ---
 interface Props {
-	additional?: string;
-	back?: string;
+  detail?: { title: string; back: string };
 }
 
-const { additional, back } = Astro.props;
+const { detail } = Astro.props;
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
 
 const routes = [
-  { id: "index", display: "DIST", href: "/" },
-  { id: "read", display: "Läs", href: "/las" },
-  { id: "listen", display: "Lyssna", href: "/lyssna" },
-]
+  { label: 'DIST', href: '/' },
+  { label: 'Läs', href: '/las' },
+  { label: 'Lyssna', href: '/lyssna' },
+];
 ---
 
-<!-- Mobile -->
-<div class="navbar md:hidden flex fixed w-full p-4 justify-between space-x-2 z-50">
-  {!additional && routes.map(r => (<span><a href={r.href} class="blur-xs hover:blur-none transition-blur">{r.display}</a></span>))}
-  {additional && <span class="cursor-default">{additional}</span>}
-  {additional && <a href={back} class="hover:blur-xs transition-blur !text-4xl -translate-y-2">x</a>}
-</div>
+<nav
+  class="fixed inset-x-0 top-0 z-50 mx-auto flex max-w-page items-start justify-between gap-2 p-4 md:grid md:grid-cols-[var(--col)_var(--col)_var(--col)_1fr_min-content] md:gap-0"
+>
+  {
+    routes.map(({ label, href }) => {
+      const current = path === href;
+      return (
+        <a
+          href={href}
+          aria-current={current ? 'page' : undefined}
+          class:list={[
+            'justify-self-start transition-[filter]',
+            !current && 'blur-xxs can-hover:blur-xs can-hover:hover:blur-none focus-visible:blur-none',
+            detail && 'max-md:hidden',
+          ]}
+        >
+          {label}
+        </a>
+      );
+    })
+  }
+  {
+    detail && (
+      <>
+        <h1 class="min-w-0 pt-0 text-body">{detail.title}</h1>
+        <a href={detail.back} aria-label="Stäng" data-close class="link shrink-0 -translate-y-2 text-close">x</a>
+      </>
+    )
+  }
+</nav>
 
-<!-- Desktop -->
-<div class="navbar hidden md:grid fixed w-full p-4 grid-cols-[9vw_9vw_9vw_1fr_min-content] z-50">
-  {routes.map(r => (<span><a href={r.href} class="blur-xs hover:blur-none transition-blur">{r.display}</a></span>))}
-  {additional && <span class="cursor-default">{additional}</span>}
-  {additional && <a href={back} class="hover:blur-xs transition-blur text-4xl -translate-y-2">x</a>}
-</div>
+<script>
+  // Clicks outside the content column and Escape close the overlay through its close link.
+  const close = () => document.querySelector<HTMLAnchorElement>('[data-close]')?.click();
 
+  document.addEventListener('click', (event) => {
+    const target = event.target as Element;
+    if (event.defaultPrevented || target.closest('main > div, nav, a, button')) return;
+    if (getSelection()?.toString()) return;
+    close();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !event.defaultPrevented) close();
+  });
+</script>

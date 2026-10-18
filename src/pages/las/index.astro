@@ -1,0 +1,35 @@
+---
+import Column from '../../components/Column.astro';
+import Rich from '../../components/Rich.astro';
+import Layout from '../../layouts/Layout.astro';
+import { las, site } from '../../lib/content';
+---
+
+<Layout title="Läs" description={site.descriptions.las} overlay>
+  <Column indent={1} heading="Läs">
+    <Rich html={las.intro} />
+    <h2>kontakt</h2>
+    <ul>
+      {las.people.map((person) => <li><a href={`/las/${person.slug}`} class="link">{person.name}</a></li>)}
+    </ul>
+    <Rich html={las.additional} />
+  </Column>
+</Layout>
+
+<script>
+  // Warms the cache with the hovered person's avatar for the current theme.
+  const seen = new Set<string>();
+
+  document.addEventListener('pointerover', async (event) => {
+    const link = (event.target as Element).closest<HTMLAnchorElement>('ul a[href^="/las/"]');
+    if (!link || seen.has(link.href)) return;
+    seen.add(link.href);
+    const html = await (await fetch(link.href)).text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const source = doc.querySelector<HTMLSourceElement>(`picture:has([data-theme="${window.theme}"]) source`);
+    if (!source) return;
+    const image = new Image();
+    image.sizes = source.sizes;
+    image.srcset = source.srcset;
+  });
+</script>

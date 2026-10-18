@@ -1,0 +1,25 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+[build.environment]
+  NODE_VERSION = "24"
+
+[[redirects]]
+  from = "/vendela-lundberg"
+  to = "/las/vendela-lundberg"
+  status = 301
+
+[[redirects]]
+  from = "/carl-johan-ulvenas"
+  to = "/las/carl-johan-ulvenas"
+  status = 301
+
+[[redirects]]
+  from = "/sally-henriksson"
+  to = "/las/sally-henriksson"
+  status = 301
+
+[[redirects]]
+  from = "/p1-dansbandsdoden"
+  to = "/lyssna"
+  status = 301

@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "KarlST";
+  src: url("/fonts/KarlST_Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-display: swap;
+}
+
+@theme {
+  --font-karlst: "KarlST", monospace;
+  --color-base-red: #fb2f1f;
+  --color-base-green: #13913c;
+  --color-base-blue: #24c5e7;
+  --color-base-purple: #a584a4;
+  /* The backdrop videos' line pattern as a flat colour, shown before a video paints. */
+  --color-backdrop-red: #fdedee;
+  --color-backdrop-green: #eef6ef;
+  --color-backdrop-blue: #f2fafc;
+  --color-backdrop-purple: #f7f5f5;
+  --blur-xs: 2px;
+  --blur-xxs: 1px;
+  --text-body: clamp(1.25rem, 0.9rem + 1.1vw, 1.875rem);
+  --text-body--line-height: calc(1em + 0.4rem);
+  /* At least 19px, so bold headings count as large text for contrast. */
+  --text-heading: clamp(1.1875rem, 1.1rem + 0.25vw, 1.25rem);
+  --text-heading--line-height: 1.5;
+  --text-title: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem);
+  --text-title--line-height: 1.15;
+  --text-close: clamp(1.5rem, 1.1rem + 1.3vw, 2.25rem);
+  --text-close--line-height: 1.1;
+  --container-page: 1600px;
+}
+
+@custom-variant theme-red (.theme.theme--red &);
+@custom-variant theme-green (.theme.theme--green &);
+@custom-variant theme-blue (.theme.theme--blue &);
+@custom-variant theme-purple (.theme.theme--purple &);
+@custom-variant can-hover (@media (hover: hover));
+
+@layer base {
+  /* Hidden scrollbar, so content and the fixed navbar don't shift when a page starts to scroll. */
+  html {
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    /* Navbar column width, shared by the content column so they line up. */
+    --col: clamp(5em, 9vw, calc(var(--container-page) * 0.09));
+    @apply font-karlst text-body font-bold break-words selection:bg-slate-800/20;
+    @apply theme-red:text-base-red theme-green:text-base-green theme-blue:text-base-blue theme-purple:text-base-purple;
+    @apply theme-red:bg-backdrop-red theme-green:bg-backdrop-green theme-blue:bg-backdrop-blue theme-purple:bg-backdrop-purple;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply pt-4 text-heading;
+  }
+
+  a {
+    @apply rounded-sm outline-offset-4 focus-visible:blur-none focus-visible:outline-2;
+  }
+}
+
+@utility link {
+  @apply transition-[filter] can-hover:hover:blur-xs;
+}
+
+@utility rich {
+  & h2 {
+    @apply text-title;
+  }
+
+  & p {
+    @apply leading-[1.35];
+  }
+
+  & a {
+    @apply link;
+  }
+}

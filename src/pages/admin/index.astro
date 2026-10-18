@@ -1,0 +1,54 @@
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex" />
+    <title>Dist CMS</title>
+    <link href="/admin/config.yml" type="application/yaml" rel="cms-config-url" />
+  </head>
+  <body>
+    <script>
+      import CMS from '@sveltia/cms';
+      import { hasLinkOrInfo } from '../../lib/productions';
+      import { slugify } from '../../lib/slugify';
+
+      type Production = { title: string; link?: string; info?: string };
+      type Person = { name: string };
+
+      // Names that give the same URL as an earlier one in the list.
+      function duplicates(names: string[]): string[] {
+        const seen = new Set<string>();
+        return names.filter((name) => {
+          const slug = slugify(name ?? '');
+          if (seen.has(slug)) return true;
+          seen.add(slug);
+          return false;
+        });
+      }
+
+      CMS.registerEventListener({
+        name: 'preSave',
+        handler: ({ entry }) => {
+          const data = entry.get('data');
+          const list = <T,>(key: string): T[] => {
+            const value = data.get(key);
+            return value?.toJS?.() ?? value ?? [];
+          };
+          const productions = list<Production>('productions');
+          const missing = productions.filter((production) => !hasLinkOrInfo(production));
+          if (missing.length) {
+            throw new Error(`Länk eller info krävs: ${missing.map((production) => production.title).join(', ')}`);
+          }
+          const taken = [
+            ...duplicates(productions.map((production) => production.title)),
+            ...duplicates(list<Person>('people').map((person) => person.name)),
+          ];
+          if (taken.length) {
+            throw new Error(`Namnet ger samma adress som ett annat i listan, ändra det: ${taken.join(', ')}`);
+          }
+        },
+      });
+      CMS.init();
+    </script>
+  </body>
+</html>

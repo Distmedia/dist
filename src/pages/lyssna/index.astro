@@ -1,0 +1,27 @@
+---
+import Column from '../../components/Column.astro';
+import Layout from '../../layouts/Layout.astro';
+import { lyssna, site } from '../../lib/content';
+import { external, newTab } from '../../lib/external-links';
+import { hasPage } from '../../lib/productions';
+---
+
+<Layout title="Lyssna" description={site.descriptions.lyssna}>
+  <Column indent={2} heading="Lyssna">
+    <ul>
+      {
+        lyssna.productions.map((production) => (
+          <li>
+            {hasPage(production) ? (
+              <a href={`/lyssna/${production.slug}`} class="link">{production.title}</a>
+            ) : production.link ? (
+              <a href={production.link} {...external} class="link">{production.title}<span class="sr-only">{newTab}</span></a>
+            ) : (
+              production.title
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </Column>
+</Layout>

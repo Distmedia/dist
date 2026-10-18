@@ -1,11 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
+import { organizationSchema, websiteSchema } from '../lib/seo';
 ---
 
-<Layout title="DIST">
-  <Navbar />
-
-	<main class="w-full p-4 pt-14" >
-	</main>
+<Layout schema={[websiteSchema(), organizationSchema()]}>
+  <main><h1 class="sr-only">DIST</h1></main>
 </Layout>

@@ -1,0 +1,35 @@
+---
+import { getImage } from 'astro:assets';
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import Avatar from '../../components/Avatar.astro';
+import Column from '../../components/Column.astro';
+import Rich from '../../components/Rich.astro';
+import Layout from '../../layouts/Layout.astro';
+import { las } from '../../lib/content';
+import { mediaImage } from '../../lib/media';
+import { excerpt, personSchema } from '../../lib/seo';
+
+export const getStaticPaths = (() =>
+  las.people.map((person) => ({ params: { slug: person.slug }, props: { person } }))) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { person } = Astro.props;
+const avatar = await getImage({ src: mediaImage(person.avatar_red), width: 1200, format: 'jpg' });
+const image = new URL(avatar.src, Astro.site).href;
+const { width, height } = avatar.attributes;
+---
+
+<Layout
+  title={person.name}
+  description={excerpt(person.info)}
+  image={{ src: image, width, height, alt: person.name }}
+  schema={personSchema(person, image)}
+  detail={{ title: person.name, back: '/las' }}
+  overlay
+>
+  <Column indent={3}>
+    <Avatar person={person} />
+    <Rich html={person.info} />
+  </Column>
+</Layout>

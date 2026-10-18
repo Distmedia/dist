@@ -1,0 +1,39 @@
+---
+import { Picture } from 'astro:assets';
+import type { Person } from '../lib/content';
+import { mediaImage } from '../lib/media';
+import { themes } from '../lib/themes';
+
+interface Props {
+  person: Person;
+}
+
+const { person } = Astro.props;
+const variants = {
+  red: 'theme-red:block',
+  green: 'theme-green:block',
+  blue: 'theme-blue:block',
+  purple: 'theme-purple:block',
+};
+---
+
+<div class="relative my-6 aspect-square w-full overflow-hidden rounded-xl">
+  <div
+    class="absolute inset-0 animate-pulse theme-red:bg-base-red/40 theme-green:bg-base-green/40 theme-blue:bg-base-blue/40 theme-purple:bg-base-purple/40"
+  ></div>
+  {
+    /* Lazy, so only the visible theme's image downloads. */
+    themes.map((theme) => (
+      <Picture
+        src={mediaImage(person[`avatar_${theme}`])}
+        alt=""
+        formats={['avif', 'webp']}
+        widths={[345, 690, 1380]}
+        sizes="(width < 768px) calc(100vw - 2rem), 690px"
+        loading="lazy"
+        data-theme={theme}
+        class:list={['relative hidden size-full object-cover', variants[theme]]}
+      />
+    ))
+  }
+</div>

@@ -1,2 +1,7 @@
-/// <reference types="astro/client" />
-/// <reference types="@sanity/astro/module" />
+import type { Theme } from './lib/themes';
+
+declare global {
+  interface Window {
+    theme: Theme;
+  }
+}

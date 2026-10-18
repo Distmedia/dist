@@ -1,0 +1,22 @@
+---
+interface Props {
+  indent: 1 | 2 | 3;
+  heading?: string;
+}
+
+// Indent lines the column up with the matching navbar column.
+const columns = {
+  1: 'md:grid-cols-[var(--col)_minmax(min-content,690px)]',
+  2: 'md:grid-cols-[calc(var(--col)*2)_minmax(min-content,690px)]',
+  3: 'md:grid-cols-[calc(var(--col)*3)_minmax(min-content,690px)]',
+};
+
+const { indent, heading } = Astro.props;
+---
+
+<main class:list={['mx-auto max-w-page p-4 py-20 md:grid', columns[indent]]}>
+  <div class="md:col-start-2">
+    {heading && <h1 class="sr-only">{heading}</h1>}
+    <slot />
+  </div>
+</main>

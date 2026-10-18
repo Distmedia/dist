@@ -1,0 +1,107 @@
+backend:
+  name: github
+  repo: Distmedia/dist
+  branch: main
+  site_domain: distmedia.netlify.app
+
+app_title: Dist
+logo:
+  src: /media/favicon.png
+show_preview_links: false
+
+media_folder: public/media
+public_folder: /media
+media_libraries:
+  all:
+    max_file_size: 10000000
+    slugify_filename: true
+  stock_assets: false
+
+editor:
+  preview: false
+  second_pane: false
+
+field_defaults:
+  richtext:
+    modes: [rich_text]
+    buttons: [heading-one, heading-two, bold, italic, strikethrough, link]
+    editor_components: []
+
+singletons:
+  - name: site
+    label: Sajt
+    icon: settings
+    file: src/content/site.yml
+    fields:
+      - { name: title, label: Titel, widget: string, hint: Startsidans titel i sökresultat }
+      - name: descriptions
+        label: Beskrivningar
+        widget: object
+        hint: Sidornas beskrivning i sökresultat
+        fields:
+          - { name: home, label: Startsidan, widget: text, maxlength: 160 }
+          - { name: las, label: Läs, widget: text, maxlength: 160, required: false, hint: Tom använder startsidans }
+          - { name: lyssna, label: Lyssna, widget: text, maxlength: 160, required: false, hint: Tom använder startsidans }
+      - name: organization
+        label: Företagsuppgifter
+        widget: object
+        hint: Visas för sökmotorer
+        fields:
+          - { name: email, label: E-post, widget: string, type: email }
+          - { name: street_address, label: Gatuadress, widget: string }
+          - { name: postal_code, label: Postnummer, widget: string }
+          - { name: city, label: Ort, widget: string }
+          - { name: instagram, label: Instagram, widget: string, hint: 'Användarnamn utan @, t.ex. distproduktion', pattern: ['^[A-Za-z0-9._]{1,30}$', 'Bara användarnamnet, utan @ och länk'] }
+      - { name: thumbnail, label: Delningsbild, widget: image, choose_url: false, accept: 'image/jpeg,image/png,image/webp,image/avif', hint: 'Visas när länken delas, helst 1200 × 630 px' }
+      - { name: favicon, label: Favicon, widget: image, choose_url: false, hint: 'Kvadratisk bild, minst 512 × 512 px' }
+      - name: videos
+        label: Videor
+        widget: object
+        collapsed: true
+        fields:
+          - { name: desktop_red, label: Desktop röd, widget: file, accept: video/mp4, choose_url: false, hint: 'MP4 utan ljud, 1440 × 1440 px, loopar, helst under 1 MB. Nederkanten visas alltid' }
+          - { name: desktop_green, label: Desktop grön, widget: file, accept: video/mp4, choose_url: false, hint: 'MP4 utan ljud, 1440 × 1440 px, loopar, helst under 1 MB. Nederkanten visas alltid' }
+          - { name: desktop_blue, label: Desktop blå, widget: file, accept: video/mp4, choose_url: false, hint: 'MP4 utan ljud, 1440 × 1440 px, loopar, helst under 1 MB. Nederkanten visas alltid' }
+          - { name: desktop_purple, label: Desktop lila, widget: file, accept: video/mp4, choose_url: false, hint: 'MP4 utan ljud, 1440 × 1440 px, loopar, helst under 1 MB. Nederkanten visas alltid' }
+          - { name: mobile_red, label: Mobil röd, widget: file, accept: video/mp4, choose_url: false, hint: 'MP4 utan ljud, 480 × 1440 px (stående), loopar, helst under 500 kB. Nederkanten visas alltid' }
+          - { name: mobile_green, label: Mobil grön, widget: file, accept: video/mp4, choose_url: false, hint: 'MP4 utan ljud, 480 × 1440 px (stående), loopar, helst under 500 kB. Nederkanten visas alltid' }
+          - { name: mobile_blue, label: Mobil blå, widget: file, accept: video/mp4, choose_url: false, hint: 'MP4 utan ljud, 480 × 1440 px (stående), loopar, helst under 500 kB. Nederkanten visas alltid' }
+          - { name: mobile_purple, label: Mobil lila, widget: file, accept: video/mp4, choose_url: false, hint: 'MP4 utan ljud, 480 × 1440 px (stående), loopar, helst under 500 kB. Nederkanten visas alltid' }
+
+  - name: las
+    label: Läs
+    icon: menu_book
+    file: src/content/las.yml
+    fields:
+      - { name: intro, label: Intro, widget: markdown }
+      - name: people
+        label: Personer
+        label_singular: Person
+        widget: list
+        collapsed: auto
+        thumbnail: avatar_red
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: Namn, widget: string, pattern: ['^(?=.*[A-Za-z0-9À-ÿ]).{1,80}$', 'Högst 80 tecken, med minst en bokstav eller siffra'] }
+          - { name: avatar_red, label: Avatar röd, widget: image, choose_url: false, accept: 'image/jpeg,image/png,image/webp,image/avif', hint: 'Kvadratisk bild' }
+          - { name: avatar_green, label: Avatar grön, widget: image, choose_url: false, accept: 'image/jpeg,image/png,image/webp,image/avif', hint: 'Kvadratisk bild' }
+          - { name: avatar_blue, label: Avatar blå, widget: image, choose_url: false, accept: 'image/jpeg,image/png,image/webp,image/avif', hint: 'Kvadratisk bild' }
+          - { name: avatar_purple, label: Avatar lila, widget: image, choose_url: false, accept: 'image/jpeg,image/png,image/webp,image/avif', hint: 'Kvadratisk bild' }
+          - { name: info, label: Info, widget: markdown }
+      - { name: additional, label: Övrigt, widget: markdown }
+
+  - name: lyssna
+    label: Lyssna
+    icon: headphones
+    file: src/content/lyssna.yml
+    fields:
+      - name: productions
+        label: Produktioner
+        label_singular: Produktion
+        widget: list
+        collapsed: auto
+        summary: '{{fields.title}}'
+        fields:
+          - { name: title, label: Titel, widget: string, pattern: ['^(?=.*[A-Za-z0-9À-ÿ]).{1,80}$', 'Högst 80 tecken, med minst en bokstav eller siffra'] }
+          - { name: link, label: Länk, widget: string, required: false, pattern: ['^https?://', 'Måste börja med https://'] }
+          - { name: info, label: Info, widget: markdown, required: false }

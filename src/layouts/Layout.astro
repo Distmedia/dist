@@ -1,147 +1,67 @@
 ---
-import { ViewTransitions } from "astro:transitions";
-import Backdrop from "../components/Backdrop.astro";
-import read from "../assets/read.json";
-import {
-  faviconUrl,
-  thumbnailUrl,
-  meta_description,
-  meta_keywords,
-} from "../assets/site.json";
-
-function extractImageLinks(data) {
-  return data.people.map(person => [
-    person.avatar_red,
-    person.avatar_green,
-    person.avatar_blue,
-    person.avatar_purple
-  ]).flat(Infinity);
-}
+import { ClientRouter } from 'astro:transitions';
+import type { ComponentProps } from 'astro/types';
+import '../styles/global.css';
+import Backdrop from '../components/Backdrop.astro';
+import Navbar from '../components/Navbar.astro';
+import { site } from '../lib/content';
+import { mediaImage } from '../lib/media';
+import { themes } from '../lib/themes';
 
 interface Props {
-  title: string;
+  title?: string;
+  description?: string;
+  image?: { src: string; width: number; height: number; alt: string };
+  schema?: object | object[];
+  detail?: ComponentProps<typeof Navbar>['detail'];
+  overlay?: boolean;
+  noindex?: boolean;
 }
 
-const { title } = Astro.props;
+const thumbnail = mediaImage(site.thumbnail);
+const { title, description = site.descriptions.home, image = { src: site.thumbnail, width: thumbnail.width, height: thumbnail.height, alt: 'DIST' }, schema, detail, overlay = false, noindex = false } = Astro.props;
+const fullTitle = title ? `${title} · DIST` : site.title;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site).href;
+const imageUrl = new URL(image.src, Astro.site).href;
+const indexable = process.env.CONTEXT === 'production' && !noindex;
 ---
 
 <!doctype html>
-<html lang="en" class="theme">
+<html lang="sv" class="theme">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="content-language" content="sv" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <meta name="generator" content={Astro.generator} />
-    <meta name="keywords" content={meta_keywords} />
-    <meta name="description" content={meta_description} />
-
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={meta_description} />
-    <meta property="og:image" content={thumbnailUrl} />
-
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={meta_description} />
-    <meta name="twitter:image" content={thumbnailUrl} />
+    <title>{fullTitle}</title>
+    {!indexable && <meta name="robots" content="noindex" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DIST" />
+    <meta property="og:locale" content="sv_SE" />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content={String(image.width)} />
+    <meta property="og:image:height" content={String(image.height)} />
+    <meta property="og:image:alt" content={image.alt} />
     <meta name="twitter:card" content="summary_large_image" />
-
-    <link rel="icon" type="image/png" href={faviconUrl} />
-
-    {extractImageLinks(read).map(l => (<link rel="preload" href={l} as="image">))}
-
-    <title>{title}</title>
-    <ViewTransitions />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />}
+    <link rel="icon" href={site.favicon} />
+    <link rel="preload" href="/fonts/KarlST_Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <script is:inline define:vars={{ themes }}>
+      // One random theme per full load, kept across client-side navigation.
+      window.theme ??= themes[Math.floor(Math.random() * themes.length)];
+      const applyTheme = (doc) => doc.documentElement.classList.add(`theme--${window.theme}`);
+      applyTheme(document);
+      document.addEventListener('astro:before-swap', (event) => applyTheme(event.newDocument));
+    </script>
+    <ClientRouter />
   </head>
-  <body class="font-karlst apply-text-color">
+  <body>
+    {overlay && <div class="fixed inset-x-0 bottom-0 -z-40 h-lvh theme-red:bg-backdrop-red/80 theme-green:bg-backdrop-green/80 theme-blue:bg-backdrop-blue/80 theme-purple:bg-backdrop-purple/80"></div>}
+    <Navbar detail={detail} />
     <slot />
     <Backdrop />
-
-    <style is:global>
-      @tailwind utilities;
-
-      @font-face {
-        font-family: "KarlST";
-        src: url("/fonts/KarlST_Bold.woff2") format("woff2");
-        font-weight: bold;
-        font-style: normal;
-        font-display: swap;
-      }
-
-      .apply-text-color {
-        @apply theme-red:text-base-red theme-blue:text-base-blue theme-green:text-base-green theme-purple:text-base-purple;
-      }
-
-      body {
-        @apply selection:bg-slate-800/20;
-      }
-
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6 {
-        @apply text-base xl:text-lg pt-4 break-words;
-      }
-
-      a {
-        @apply text-xl xl:text-3xl hover:blur-xs transition-blur break-words;
-      }
-
-      p, span {
-        @apply text-xl xl:text-3xl break-words;
-      }
-    </style>
-
-    <script is:inline>
-      function setTheme() {
-        const themeCandidates = [
-          "theme--green",
-          "theme--red",
-          "theme--blue",
-          "theme--purple",
-        ];
-
-        const theme =
-          themeCandidates[Math.floor(Math.random() * themeCandidates.length)];
-
-        localStorage.setItem("theme", theme);
-      }
-
-      function applyTheme() {
-        const theme = localStorage.getItem("theme") 
-        const themeElement = document.querySelector(".theme");
-
-        themeElement.classList.forEach((className) => {
-          if (className.startsWith("theme--")) {
-            themeElement.classList.remove(className);
-          }
-        });
-
-        themeElement.classList.add(theme);
-      }
-
-
-      setTheme();
-      applyTheme();
-
-
-      document.addEventListener("astro:page-load", function (event) {
-        applyTheme();
-
-        const anchorTags = document.querySelectorAll('a');
-        let currentRoute = event.target.location.pathname;
-
-        if (currentRoute !== "/" && currentRoute.endsWith("/")) {
-          currentRoute = currentRoute.slice(0,-1)
-        }
-
-        anchorTags.forEach((anchorTag) => {
-          if (anchorTag.getAttribute('href') === currentRoute) {
-            anchorTag.classList.remove("blur-xs");
-          }
-        });
-      });
-    </script>
   </body>
 </html>

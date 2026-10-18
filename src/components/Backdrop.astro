@@ -1,122 +1,74 @@
 ---
-import backdrops from "../assets/backdrops.json";
-
-const debounceTime = 250;
-const screenBreakpoint = 768;
-
-const videoSources = [
-  { src: backdrops.desktop_video_red, type: "video/mp4", url: undefined, theme: "theme--red" },
-  { src: backdrops.desktop_video_green, type: "video/mp4", url: undefined, theme: "theme--green" },
-  { src: backdrops.desktop_video_blue, type: "video/mp4", url: undefined, theme: "theme--blue" },
-  { src: backdrops.desktop_video_purple, type: "video/mp4", url: undefined, theme: "theme--purple" },
-  {
-    src: backdrops.mobile_video_red,
-    type: "video/mp4",
-    media: screenBreakpoint,
-    url: undefined,
-    theme: "theme--red"
-  },
-  {
-    src: backdrops.mobile_video_green,
-    type: "video/mp4",
-    media: screenBreakpoint,
-    url: undefined,
-    theme: "theme--green"
-  },
-  {
-    src: backdrops.mobile_video_blue,
-    type: "video/mp4",
-    media: screenBreakpoint,
-    url: undefined,
-    theme: "theme--blue"
-  },
-  {
-    src: backdrops.mobile_video_purple,
-    type: "video/mp4",
-    media: screenBreakpoint,
-    url: undefined,
-    theme: "theme--purple"
-  },
-];
+import { site } from '../lib/content';
 ---
 
 <video
+  id="backdrop"
+  aria-hidden="true"
   transition:persist
-  class="fixed w-screen h-screen object-cover object-bottom bottom-0 -z-50 transition-opacity ease-in-out duration-50"
-  playsinline
+  class="fixed inset-x-0 bottom-0 -z-50 h-lvh w-full object-cover object-bottom max-md:mask-[linear-gradient(transparent_calc(100lvh-100dvh),black_calc(100lvh-100dvh+2rem),black_calc(100%-2rem),transparent)]"
+  data-videos={JSON.stringify(site.videos)}
+  preload="auto"
   muted
+  loop
+  playsinline
+></video>
+
+<button
+  id="backdrop-toggle"
+  type="button"
+  transition:persist
+  class="group fixed right-2 bottom-2 z-50 cursor-pointer rounded-sm p-2 opacity-30 outline-offset-2 blur-xxs transition-[filter,opacity] focus-visible:opacity-100 focus-visible:outline-2 focus-visible:blur-none can-hover:hover:opacity-100 can-hover:hover:blur-none"
 >
-</video>
+  <svg viewBox="0 0 12 12" aria-hidden="true" class="size-3 fill-current group-data-paused:hidden">
+    <rect x="2" y="1" width="3" height="10" />
+    <rect x="7" y="1" width="3" height="10" />
+  </svg>
+  <svg viewBox="0 0 12 12" aria-hidden="true" class="hidden size-3 fill-current group-data-paused:block">
+    <path d="M2 1 11 6 2 11z" />
+  </svg>
+</button>
 
-<script is:inline define:vars={{ videoSources, debounceTime, screenBreakpoint }}>
-  let currentSources = [];
+<script>
+  // biome-ignore lint/style/noNonNullAssertion: element is rendered above
+  const video = document.querySelector<HTMLVideoElement>('#backdrop')!;
+  // biome-ignore lint/style/noNonNullAssertion: data-videos is always set
+  const videos: Record<string, string> = JSON.parse(video.dataset.videos!);
+  const mobile = matchMedia('(width < 768px)');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  // biome-ignore lint/style/noNonNullAssertion: element is rendered above
+  const toggle = document.querySelector<HTMLButtonElement>('#backdrop-toggle')!;
+  // The visitor's own pause or play wins over the reduced motion setting, until a full reload.
+  let choice: 'paused' | 'playing' | null = null;
 
-  const video = document.querySelector("video");
+  const shouldPlay = () => (choice ? choice === 'playing' : !still.matches);
 
-  video.addEventListener("ended", function () {
-    video.play();
+  function setSource() {
+    const src = videos[`${mobile.matches ? 'mobile' : 'desktop'}_${window.theme}`];
+    // The time fragment makes Safari paint the first frame without playing.
+    video.src = still.matches ? `${src}#t=0.001` : src;
+    setPlaying();
+  }
+
+  function setPlaying() {
+    if (shouldPlay()) video.play().catch(() => {});
+    else video.pause();
+  }
+
+  // Follows the video itself, since browsers can refuse to play it.
+  function setToggle() {
+    toggle.toggleAttribute('data-paused', video.paused);
+    toggle.ariaLabel = video.paused ? 'Spela bakgrundsvideo' : 'Pausa bakgrundsvideo';
+  }
+
+  setToggle();
+  video.addEventListener('play', setToggle);
+  video.addEventListener('pause', setToggle);
+  setSource();
+  mobile.addEventListener('change', setSource);
+  still.addEventListener('change', setPlaying);
+  toggle.addEventListener('click', () => {
+    choice = video.paused ? 'playing' : 'paused';
+    setPlaying();
   });
-
-  // async function applyObjectsUrls() {
-  //   const theme = localStorage.getItem("theme")
-
-  //   for (var videoSource of videoSources) {
-  //     if (videoSource.url === undefined && videoSource.theme === theme) {
-  //       const videoRequest = await fetch(videoSource.src);
-  //       const blob = await videoRequest.blob();
-  //       videoSource.url = window.URL.createObjectURL(blob);
-  //     }
-  //   }
-  // }
-
-  async function setVideoSource() {
-    // await applyObjectsUrls();
-
-    const theme = localStorage.getItem("theme")
-
-    const newSources =
-      window.innerWidth < screenBreakpoint
-        ? videoSources.filter((source) => source.media && source.theme === theme)
-        : videoSources.filter((source) => !source.media && source.theme === theme);
-    
-    currentSources = newSources;
-
-    while (video.firstChild) {
-      video.firstChild.remove();
-    }
-
-    for (var videoSource of newSources) {
-      const source = document.createElement("source");
-      // source.src = videoSource.url || videoSource.src;
-      source.src = videoSource.src;
-      source.type = videoSource.type;
-      video.appendChild(source);
-    }
-
-    video.load();
-    video.play();
-  }
-
-  function debounce(func, delay) {
-    let debounceTimer;
-    return function () {
-      const context = this;
-      const args = arguments;
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => func.apply(context, args), delay);
-    };
-  }
-
-  let lastWidth = window.innerWidth;
-  const handleResize = debounce(() => {
-    const currentWidth = window.innerWidth;
-
-    if (currentWidth !== lastWidth) {
-      lastWidth = currentWidth;
-      setVideoSource();
-    }
-  }, debounceTime);
-
-  window.addEventListener("load", setVideoSource);
-  window.addEventListener("resize", handleResize);
 </script>
